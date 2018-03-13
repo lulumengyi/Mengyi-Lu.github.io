@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="第一周 循环序列模型（recurrent sequence model） 1.1 为什么选择序列模型  我们先看下有哪些例子使用了序列模型？ 1.语音识别中，给定了一个输入音频片段x，要求输出片段对应的文字记录y。x，y都是序列数据 2.音乐识别。只有输出数据y是序列数据，而输入数据可以是空集，也可以是单一的数字，这个数可以指代你想生成音乐风格或者那首曲子的前几个曲符。无论怎样，x可以是空集或是单">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第五部分 序列模型">
+<meta property="og:url" content="http://yoursite.com/2018/02/26/序列模型/index.html">
+<meta property="og:site_name" content="lmy的NLP学习记录">
+<meta property="og:description" content="第一周 循环序列模型（recurrent sequence model） 1.1 为什么选择序列模型  我们先看下有哪些例子使用了序列模型？ 1.语音识别中，给定了一个输入音频片段x，要求输出片段对应的文字记录y。x，y都是序列数据 2.音乐识别。只有输出数据y是序列数据，而输入数据可以是空集，也可以是单一的数字，这个数可以指代你想生成音乐风格或者那首曲子的前几个曲符。无论怎样，x可以是空集或是单">
+<meta property="og:image" content="e:/Hexo/img/1.1.png">
+<meta property="og:image" content="e:/Hexo/img/2.1.png">
+<meta property="og:image" content="e:/Hexo/img/2.2.png">
+<meta property="og:updated_time" content="2018-02-28T12:41:40.316Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第五部分 序列模型">
+<meta name="twitter:description" content="第一周 循环序列模型（recurrent sequence model） 1.1 为什么选择序列模型  我们先看下有哪些例子使用了序列模型？ 1.语音识别中，给定了一个输入音频片段x，要求输出片段对应的文字记录y。x，y都是序列数据 2.音乐识别。只有输出数据y是序列数据，而输入数据可以是空集，也可以是单一的数字，这个数可以指代你想生成音乐风格或者那首曲子的前几个曲符。无论怎样，x可以是空集或是单">
+<meta name="twitter:image" content="e:/Hexo/img/1.1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/02/26/序列模型/"/>
+
+
+
+
+
+  <title>第五部分 序列模型 | lmy的NLP学习记录</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">lmy的NLP学习记录</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/26/序列模型/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="lmy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="lmy的NLP学习记录">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">第五部分 序列模型</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-26T21:41:26+08:00">
+                2018-02-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="第一周-循环序列模型（recurrent-sequence-model）"><a href="#第一周-循环序列模型（recurrent-sequence-model）" class="headerlink" title="第一周 循环序列模型（recurrent sequence model）"></a>第一周 循环序列模型（recurrent sequence model）</h1><p></p><p></p>
+<h2 id="1-1-为什么选择序列模型"><a href="#1-1-为什么选择序列模型" class="headerlink" title="1.1 为什么选择序列模型"></a>1.1 为什么选择序列模型</h2><p>  我们先看下有哪些例子使用了序列模型？</p>
+<p></p><p><br>1.语音识别中，给定了一个输入音频片段x，要求输出片段对应的文字记录y。x，y都是序列数据</p>
+<p>2.音乐识别。只有输出数据y是序列数据，而输入数据可以是空集，也可以是单一的数字，这个数可以指代你想生成音乐风格或者那首曲子的前几个曲符。无论怎样，x可以是空集或是单一的数字，然后输出序列y。</p>
+<p>  3.情感分类。输入数据x是序列，there is nothing to like in this movie。输出这句评论对应几星。</p>
+<p>  4.DNA序列分析。</p><p><br>  5.机器翻译。</p><p><br>  6.视频动作识别。</p><p><br>  7.命名实体识别。</p><p><br><img src="e:/Hexo/img/1.1.png" alt=""></p>
+<h2 id="1-2-数字符号-Notation"><a href="#1-2-数字符号-Notation" class="headerlink" title="1.2 数字符号 Notation"></a>1.2 数字符号 Notation</h2><p>Motivating example<br>输入语句：<br>x:Harry Potter and Herminoe Granger invented a new spell<br> x[^1] x[^2]<br><img src="e:/Hexo/img/2.1.png" alt=""><br>命名实体识别，<br>假如你想每个单词都对应1个输出，判断是否为人名从哪里开始到哪里结束。<br>y:I I O I I O O O O<br> y[^1]<br>Tx（）<br>怎么表示像Harry这样的单词<br>做一个词表，vocabulary【a,aron,…harry,..potter】<br>one hot表示法，【0，0，0…..1,0,0,0,0…】 pos=4075 10000维</p>
+<p><unk> unknown 不在词表中的词<br><img src="e:/Hexo/img/2.2.png" alt=""></unk></p>
+<h2 id="1-3-循环神经网络模型"><a href="#1-3-循环神经网络模型" class="headerlink" title="1.3 循环神经网络模型"></a>1.3 循环神经网络模型</h2><p>如何建立一个模型，实现x到y的映射。<br>建立一个标准的网络模型，有两个问题，1.有不同的长度x和y，2.不共享从文本不同位置上学到的特征（单词和单词之间的特性无法被捕捉到），比如神经网络在1的位置上发现harry是人名的一部分，在其他位置发现harry时你也希望也能识别出是人名出来。在卷积网络中我们是这样学习的，参数会十分大，单词数量乘以10000维的维度，假设我们有10000个常用词，为其构建一个10000*1 的矩阵(column matrix)，假如第一个词是苹果(apple), 那么对应的第一个位置为1，其他都为0，所以称之为one-hot。这样每个单词都有对应的矩阵进行表示，如果这个词没有出现在我们的字典中，那么我们可以给一个特殊的符号代替，常用的是 [UNK] (unknown)</p>
+<h1 id="为什么是循环神经网络？"><a href="#为什么是循环神经网络？" class="headerlink" title="为什么是循环神经网络？"></a>为什么是循环神经网络？</h1><p>我们取第一个单词，通过隐层，然后直接输出y，循环神经网络做的是什么呢，当我们输入第二个单词时，同样通过隐层输出y，它不仅仅是利用了第二个单词的信息，它还利用了时间步1的信息，<br>在下一个时间步，在第三个单词输出y，直到最后一个，在每一个时间步，激活值a，为了表示循环人们画一个圈。<br>每个时间步共享参数，共享参数，一个缺点是它只用了前面序列的信息来预测，双向循环神经网络解决，同时使用前面和后面的信息。<br>这些参数是如何起作用的？</p>
+<h1 id="前向传播"><a href="#前向传播" class="headerlink" title="前向传播"></a>前向传播</h1><p>为了算出a(1)=g(w_aa<em>a(0)+w_ax</em>x(1)+b_a)<br>y(1)=g(w_ya<em>a(1)+b_y) tanh 更常用<br>a(t)=g(w_aa</em>a(t)+w_ax<em>x(t)+b_a)<br>y(t)=g(w_ya</em>a(t)+b_y)<br>简化 a(t)=g(w_a[a(t-1),x(t)]+b_a)<br>w_a=[w_aa|w_ax] w_aa(100,100) w_ax(100,10000) w_a=(100,10100)<br>[a(t-1),x(t)]=[a(t-1)  100 <br><br>               x(t)    10000] 10100</p>
+<h2 id="1-4通过时间的反向传播"><a href="#1-4通过时间的反向传播" class="headerlink" title="1.4通过时间的反向传播"></a>1.4通过时间的反向传播</h2><p>损失函数</p>
+<h2 id="1-5不同类型的循环神经网络"><a href="#1-5不同类型的循环神经网络" class="headerlink" title="1.5不同类型的循环神经网络"></a>1.5不同类型的循环神经网络</h2><p>并不是所有情况tx=ty，<br>examples </p>
+<p>文本情感分类，我们在读入所有单词后再输出y，many to one</p>
+<p>音乐生成，one to many<br>机器翻译 many to many 长度不同</p>
+<h1 id="1-6语言模型与序列生成"><a href="#1-6语言模型与序列生成" class="headerlink" title="1.6语言模型与序列生成"></a>1.6语言模型与序列生成</h1><p>什么是语言模型呢？语音识别系统<br> the apple and pair salad<br> the apple and pear salad<br>p(the apple and pair salad)=3.2*10_7<br>输入一个文本序列，语言模型会估计某个单词出现的概率。<br>如何来用RNN来建语言模型呢？<br>首先需要一个训练集，语料库。有一个句子，先把它标记化，EOS结束标记。<br>如果不在字典中，unk标记。<br>RNN Model<br>Cats average 15 hours of sleep a day.<br>预测每个词的概率是多少 y<t>是一个10000+2维（字典大小+unk+结束标记）<br>现在有一个新的序列 y1,y2,y3.第一个softmax层告诉你p(y1)第二个softmax,p(y2|y1),第三p(y3|y1,y2)</t></p>
+<h1 id="1-7对新序列采样"><a href="#1-7对新序列采样" class="headerlink" title="1.7对新序列采样"></a>1.7对新序列采样</h1><p>当你训了好一个模型，你想知道这个模型学到了什么，一个非正式的方法是进行一次新序列采样。一个序列模型，模拟了任意特定单词序列的概率，对概率进行采样，来生成一个新的单词序列。<br>比如说现在有一个训练好的模型，为了进行采样，第一步要做的事就是，对你想要模型生成的第一个词进行采样，输入x1,输出y1，y1中是每个单词的概率是多少，用np.random.choice进行采样，把刚刚进行采样的词当作下一时间步的输入x2，(x2=y1),得到y2，同样依次进行。怎么判断这个句子结束，EOS标记。如果得到unknown标记，重新进行采样，直到得到一个不是未知标识的词，你也可以不管。<br>也可以建立基于字符的模型，[a,b,c,….z;A,…Z]使用基于字符的，不会产生unk标志，一会得到很长的序列，不够捕捉较长的信息。</p>
+<h1 id="1-8带有神经网络的梯度消失"><a href="#1-8带有神经网络的梯度消失" class="headerlink" title="1.8带有神经网络的梯度消失"></a>1.8带有神经网络的梯度消失</h1><p>vanishing gradients with RNNs<br>the cat which already ate …,was full.<br>the cats which already ate …,were full.<br>不塌擅长捕捉长信息。比如我们有一个根深的网络，反向传播时很难影响到前面的权重，很难冉一个神经网络记住前面的额信息，应该是用was 还是were，基本的RNN模型有很多限制，很难调整序列前面的计算。长期依赖问题。梯度爆炸，在反向传播时，指数级大的会让参数变得很大，NaN数值溢出，用梯度修剪，如果它大于某一个值，缩小 通过最大值来修剪。<br>梯度消失更难解决。GRU解决</p>
+<h1 id="1-9GRU"><a href="#1-9GRU" class="headerlink" title="1.9GRU"></a>1.9GRU</h1><p>它改变了RNN的隐藏层，使其更好的捕捉深层连接并改善了梯度消失的问题。<br>a(t)=g(w_a[a(t-1),x(t)]+b_a)<br>GRU the cat which already ate …,was full.<br>GRU会有一个新的c=memory cell c(t)=a(t)<br>c_n(t)=tanh(wc[c(t-1),x(t)]+bc)<br>gamma u=g(wu[c(t-1),x(t)]+bu) gate 决定什么更新c(t)<br>c(t)=gamma u<em>c_n(t)+(1-gamma u)</em>c(t-1)<br>因为gate很容易取到0，只要这个值是一个很大的负数，就基本为0，维持细胞的状态，可能是0.0000001，这就不会有梯度消失的问题，因为gamma很接近0，这就是说c(t)基本等于c(t-1),而c(t)的值即使经过很多的时间步还是可以很好的维持下来，这就是缓解梯度消失的关键。<br>一些细节：c(t)可以是向量 gamma 相同的维度，<br>gamma r 用来计算c(t) c(t-1)的相关性</p>
+<h1 id="1-10-LSTM"><a href="#1-10-LSTM" class="headerlink" title="1.10 LSTM"></a>1.10 LSTM</h1><p>比GRU更广泛应用。<br>遗忘门，更新门，输出门，</p>
+<h1 id="1-11-双向RNN模型"><a href="#1-11-双向RNN模型" class="headerlink" title="1.11 双向RNN模型"></a>1.11 双向RNN模型</h1><p>为了了解双向RNN的动机，我们先看下命名实体识别那个例子。<br>He said,”Teddy bears are on sale!”<br>He said,”Teddy Roosevelt was a great President!”<br>Teddy判断是不是人名有个问题，只看前几个单词是无法准确判断的，<br>双向的话可以解决这个问题。</p>
+<h1 id="1-12-深度RNN"><a href="#1-12-深度RNN" class="headerlink" title="1.12 深度RNN"></a>1.12 深度RNN</h1><p>有的时候为了得到更好的结果，需要叠加很多个RNN在一起，这种网络我们称之为深层RNN。<br>比如我们要计算 a[2][3]，则<br>a[2][3]=g(W[2]a[a[2][2],a[1][3]]+ba[3])</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/22/Markdown常用语法/" rel="next" title="Markdown 常用语法(个人总结）">
+                <i class="fa fa-chevron-left"></i> Markdown 常用语法(个人总结）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/07/强化学习/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/me.jpg"
+                alt="lmy" />
+            
+              <p class="site-author-name" itemprop="name">lmy</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">Artikel</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#第一周-循环序列模型（recurrent-sequence-model）"><span class="nav-number">1.</span> <span class="nav-text">第一周 循环序列模型（recurrent sequence model）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-为什么选择序列模型"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 为什么选择序列模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-数字符号-Notation"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 数字符号 Notation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-循环神经网络模型"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 循环神经网络模型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#为什么是循环神经网络？"><span class="nav-number">2.</span> <span class="nav-text">为什么是循环神经网络？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#前向传播"><span class="nav-number">3.</span> <span class="nav-text">前向传播</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4通过时间的反向传播"><span class="nav-number">3.1.</span> <span class="nav-text">1.4通过时间的反向传播</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5不同类型的循环神经网络"><span class="nav-number">3.2.</span> <span class="nav-text">1.5不同类型的循环神经网络</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-6语言模型与序列生成"><span class="nav-number">4.</span> <span class="nav-text">1.6语言模型与序列生成</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-7对新序列采样"><span class="nav-number">5.</span> <span class="nav-text">1.7对新序列采样</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-8带有神经网络的梯度消失"><span class="nav-number">6.</span> <span class="nav-text">1.8带有神经网络的梯度消失</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-9GRU"><span class="nav-number">7.</span> <span class="nav-text">1.9GRU</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-10-LSTM"><span class="nav-number">8.</span> <span class="nav-text">1.10 LSTM</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-11-双向RNN模型"><span class="nav-number">9.</span> <span class="nav-text">1.11 双向RNN模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-12-深度RNN"><span class="nav-number">10.</span> <span class="nav-text">1.12 深度RNN</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lmy</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Erstellt mit  <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
