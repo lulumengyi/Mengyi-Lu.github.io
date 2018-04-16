@@ -9,7 +9,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
-    <title>强化学习 · Lmy&#39;s Blog</title>
+    <title>强化学习概述 · Lmy&#39;s Blog</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -265,7 +265,7 @@
                 <a href="/" >Lmy&#39;s Blog.</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">强化学习</a>
+                <a href="#" class="post-name">强化学习概述</a>
             </div>
     </div>
     
@@ -297,7 +297,7 @@ height:50vh;
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            强化学习
+            强化学习概述
             <!-- 404 -->
             
         </h1>
@@ -348,8 +348,11 @@ height:50vh;
 <p>Action a: 在每一个 state 中，agent 可以采取的动作即为Action. 例如前，后，左，右，刹车，油门。每采取一个 action， agent 将相应会到下一个 state (可以理解为车往前开了，环境就相应变化了)。</p>
 <p>Reward r: 每到一个state，agent 就有可能会收到一个 reward 反馈，例如撞了墙就会收到一个负的反馈，而如果顺利到达终点就会收到一个正的反馈。</p>
 <p>Policy P：如何选择动作的策略，我们希望能够学习到一个策略可以让 agent 得到最大的累积反馈</p>
-<pre><code>简单介绍下强化学习，强化学习就是环境与agent的交互的过程，每一个步骤t呢，会从agent得到一个当前的状态st，agent会从环境中得到st，会给agent一个反馈，告诉agent这个决策是好的还是不好的，同时environment会基于agent的状态和动作生成下一个状态st,在强化学习中，agent会和environment，另外一个就是action，action就是现在这个动作，做了什么样的动作，reward反馈，1到d大t步，得到total reward，agent会和环境做交互，每一次交互，比较重要的几个概念，state，action，agent会从环境中做出同的，reward，通过不同的动作，得到不同的reward，什么意思呢，走迷宫，我不知道我这一步是好还是不好，走到死胡同才知道我走的不好，reward不是每一步才有，只有走到死胡同才会得到反馈。
-</code></pre><h1 id="什么是强化学习？"><a href="#什么是强化学习？" class="headerlink" title="什么是强化学习？"></a>什么是强化学习？</h1><p>强化学习是一类算法, 是让计算机实现从一开始什么都不懂, 脑袋里没有一点想法, 通过不断地尝试, 从错误中学习, 最后找到规律, 学会了达到目的的方法. 这就是一个完整的强化学习过程. 实际中的强化学习例子有很多. 比如近期最有名的 Alpha go, 机器头一次在围棋场上战胜人类高手, 让计算机自己学着玩经典游戏 Atari, 这些都是让计算机在不断的尝试中更新自己的行为准则, 从而一步步学会如何下好围棋, 如何操控游戏得到高分. 既然要让计算机自己学, 那计算机通过什么来学习呢?</p>
+<blockquote>
+<p>简单介绍下强化学习，强化学习就是环境与agent的交互的过程，每一个步骤t呢，会从agent得到一个当前的状态st，agent会从环境中得到st，会给agent一个反馈，告诉agent这个决策是好的还是不好的，同时environment会基于agent的状态和动作生成下一个状态st,在强化学习中，agent会和environment，另外一个就是action，action就是现在这个动作，做了什么样的动作，reward反馈，1到d大t步，得到total reward，agent会和环境做交互，每一次交互，比较重要的几个概念，state，action，agent会从环境中做出同的，reward，通过不同的动作，得到不同的reward，什么意思呢，走迷宫，我不知道我这一步是好还是不好，走到死胡同才知道我走的不好，reward不是每一步才有，只有走到死胡同才会得到反馈。</p>
+</blockquote>
+<p>强化学习的过程和我们的一些自然经历很相似，比如我们小时候看到火，走到火边时，你会感觉很温暖，然后但当你试着去摸一下，就会被烫到，然后你之后就会知道，在稍远的地方火是好的，靠得太近就不行，这是我们人类的交互方式，与环境交互。强化学习也是一样的道理，只是主角是计算机了。</p>
+<h1 id="马尔科夫模型"><a href="#马尔科夫模型" class="headerlink" title="马尔科夫模型"></a>马尔科夫模型</h1><h1 id="什么是强化学习？"><a href="#什么是强化学习？" class="headerlink" title="什么是强化学习？"></a>什么是强化学习？</h1><p>强化学习是一类算法, 是让计算机实现从一开始什么都不懂, 脑袋里没有一点想法, 通过不断地尝试, 从错误中学习, 最后找到规律, 学会了达到目的的方法. 这就是一个完整的强化学习过程. 实际中的强化学习例子有很多. 比如近期最有名的 Alpha go, 机器头一次在围棋场上战胜人类高手, 让计算机自己学着玩经典游戏 Atari, 这些都是让计算机在不断的尝试中更新自己的行为准则, 从而一步步学会如何下好围棋, 如何操控游戏得到高分. 既然要让计算机自己学, 那计算机通过什么来学习呢?</p>
 <h2 id="一个例子"><a href="#一个例子" class="headerlink" title="一个例子"></a>一个例子</h2><p>比如说，原来计算机也需要一位虚拟的老师, 这个老师比较吝啬, 他不会告诉你如何移动, 如何做决定, 他为你做的事只有给你的行为打分, 那我们应该以什么形式学习这些现有的资源, 或者说怎么样只从分数中学习到我应该怎样做决定呢? 很简单, 我只需要记住那些高分, 低分对应的行为, 下次用同样的行为拿高分, 并避免低分的行为.</p>
 <p>比如老师会根据我的开心程度来打分, 我开心时, 可以得到高分, 我不开心时得到低分. 有了这些被打分的经验, 我就能判断为了拿到高分, 我应该选择一张开心的脸, 避免选到伤心的脸. 这也是强化学习的核心思想. 可以看出在强化学习中, 一种行为的分数是十分重要的. 所以强化学习具有分数导向性. 我们换一个角度来思考.这种分数导向性好比我们在监督学习中的正确标签.</p>
 <h2 id="对比监督学习"><a href="#对比监督学习" class="headerlink" title="对比监督学习"></a>对比监督学习</h2><p>我们知道监督学习, 是已经有了数据和数据对应的正确标签, 比如这样. 监督学习就能学习出那些脸对应哪种标签. 不过强化学习还要更进一步, 一开始它并没有数据和标签.</p>
@@ -499,7 +502,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#概念："><span class="toc-number">1.</span> <span class="toc-text">概念：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#什么是强化学习？"><span class="toc-number">2.</span> <span class="toc-text">什么是强化学习？</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一个例子"><span class="toc-number">2.1.</span> <span class="toc-text">一个例子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对比监督学习"><span class="toc-number">2.2.</span> <span class="toc-text">对比监督学习</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#强化学习算法汇总"><span class="toc-number">3.</span> <span class="toc-text">强化学习算法汇总</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Model-free-和-Model-based"><span class="toc-number">3.1.</span> <span class="toc-text">Model-free 和 Model-based</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基于概率-和-基于价值"><span class="toc-number">3.2.</span> <span class="toc-text">基于概率 和 基于价值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#回合更新-和-单步更新"><span class="toc-number">3.3.</span> <span class="toc-text">回合更新 和 单步更新</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在线学习-和-离线学习"><span class="toc-number">3.4.</span> <span class="toc-text">在线学习 和 离线学习</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#概念："><span class="toc-number">1.</span> <span class="toc-text">概念：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#马尔科夫模型"><span class="toc-number">2.</span> <span class="toc-text">马尔科夫模型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#什么是强化学习？"><span class="toc-number">3.</span> <span class="toc-text">什么是强化学习？</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一个例子"><span class="toc-number">3.1.</span> <span class="toc-text">一个例子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对比监督学习"><span class="toc-number">3.2.</span> <span class="toc-text">对比监督学习</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#强化学习算法汇总"><span class="toc-number">4.</span> <span class="toc-text">强化学习算法汇总</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Model-free-和-Model-based"><span class="toc-number">4.1.</span> <span class="toc-text">Model-free 和 Model-based</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基于概率-和-基于价值"><span class="toc-number">4.2.</span> <span class="toc-text">基于概率 和 基于价值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#回合更新-和-单步更新"><span class="toc-number">4.3.</span> <span class="toc-text">回合更新 和 单步更新</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在线学习-和-离线学习"><span class="toc-number">4.4.</span> <span class="toc-text">在线学习 和 离线学习</span></a></li></ol></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
@@ -620,43 +623,12 @@ top:50vh;
     
     
     
-    
-    
-    
-    <div class="total-archive"> Total : 9 </div>
+    <div class="total-archive"> Total : 10 </div>
     
     <div class="post-archive">
     
     
     
-    
-    <div class="archive-year"> 2018 </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/论文学习笔记 -RL for Text classification/" >论文学习笔记-Learning Structured Representation for Text Classification via Reinforcement Learning</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> Invalid date </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2018/03/14/强化学习概述/" >强化学习</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
     
     <div class="archive-year"> Invalid date </div>
     <ul class="year-list">
@@ -672,17 +644,12 @@ top:50vh;
     
         </ul>
     
-    <div class="archive-year"> 2018 </div>
+    <div class="archive-year"> Invalid date </div>
     <ul class="year-list">
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/Q-learning/" >论文学习笔记-Dual-tensor</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/一篇反思/" >乱七八糟的反思</a>
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2018/03/14/强化学习概述/" >强化学习概述</a>
         </li>
     
     
@@ -707,6 +674,26 @@ top:50vh;
     
     <div class="archive-year"> 2018 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/4.16-4.22周计划/" >[Untitled Post]</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/论文学习笔记 -RL for Text classification/" >论文学习笔记-Learning Structured Representation for Text Classification via Reinforcement Learning</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/Q-learning/" >论文学习笔记-Dual-tensor</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/一篇反思/" >乱七八糟的反思</a>
+        </li>
     
     
         <li class="archive-post-item">
