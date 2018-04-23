@@ -9,7 +9,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
-    <title>416-422周计划 · Lmy&#39;s Blog</title>
+    <title>Python 排序总结 · Lmy&#39;s Blog</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -265,7 +265,7 @@
                 <a href="/" >Lmy&#39;s Blog.</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">416-422周计划</a>
+                <a href="#" class="post-name">Python 排序总结</a>
             </div>
     </div>
     
@@ -297,7 +297,7 @@ height:50vh;
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            416-422周计划
+            Python 排序总结
             <!-- 404 -->
             
         </h1>
@@ -305,6 +305,8 @@ height:50vh;
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
             
+            
+                使用sorted函数与lambda实现不同数据类型排序
             
             <!-- 404 -->
             
@@ -315,15 +317,17 @@ height:50vh;
             
                 <div class= post-intro-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = 日常>日常</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = Python>Python</a>
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = 计划>计划</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = 排序>排序</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = lambda>lambda</a>
     
 </div>
             
             <div class="post-intro-meta">
                 <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                <span class="post-intro-time">2018/04/15</span>
+                <span class="post-intro-time">2018/02/01</span>
                 
                 <span id="busuanzi_container_page_pv" class="busuanzi-pv">
                     <span class="iconfont-archer">&#xe602;</span>
@@ -352,17 +356,48 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <h1 id="这周计划"><a href="#这周计划" class="headerlink" title="这周计划"></a>这周计划</h1><ol>
-<li><p>计划</p>
+        <h1 id="Python-排序总结"><a href="#Python-排序总结" class="headerlink" title="Python 排序总结"></a>Python 排序总结</h1><blockquote>
+<p>在处理的标注的数据时候经常需要对字典或者嵌套列表排序，这里特别汇总下Python中的排序</p>
+</blockquote>
+<h2 id="sorted-函数介绍"><a href="#sorted-函数介绍" class="headerlink" title="sorted 函数介绍"></a>sorted 函数介绍</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sorted(iterable, *, key=<span class="keyword">None</span>, reverse=<span class="keyword">False</span>)</span><br></pre></td></tr></table></figure>
+<p>Return a new sorted list from the items in <code>iterable</code>.</p>
+<p>Has two optional arguments which must be specified as keyword arguments.</p>
+<p><code>key</code> specifies a function of one argument that is used to extract a comparison key from each list element: key=str.lower. The default value is None (compare the elements directly).</p>
+<p><code>reverse</code> is a boolean value. If set to True, then the list elements are sorted as if each comparison were reversed.</p>
+<p>sorted 函数一共三个参数，第一个<code>iterable</code>是需要排序的容器；第二个<code>key</code>参数应当是一个函数，其对容器中的每个值处理后返回一个新值，作为排序的依据；第三个<code>reverse</code>参数指明是否反向排序。后面两个参数可以省略</p>
+<p>最简单的sorted函数使用如下：</p>
 <ul>
-<li>至少1篇论文</li>
-<li>跟tensorflow教程</li>
-<li>刷编程题</li>
-<li>跑实验记录</li>
-</ul>
-<p>保持上进 保持清醒</p>
+<li><p>对列表排序：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>sorted([<span class="number">5</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">4</span>])</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br></pre></td></tr></table></figure>
 </li>
-</ol>
+<li><p>对字典key排序(只输出key)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'c'</span>: <span class="number">1</span>, <span class="string">'b'</span>: <span class="number">2</span>, <span class="string">'a'</span>: <span class="number">3</span>&#125;</span><br><span class="line">print(sorted(dic))</span><br><span class="line"><span class="comment"># ['a', 'b', 'c']</span></span><br><span class="line">print(sorted(dic, reverse=<span class="keyword">True</span>))</span><br><span class="line"><span class="comment"># ['c', 'b', 'a']</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<blockquote>
+<p>注意：list有sort方法，与sorted不同，这是一个<code>就地排序</code>算法！你依然可以对list使用sorted函数排序</p>
+</blockquote>
+<h2 id="使用key参数实现多种排序"><a href="#使用key参数实现多种排序" class="headerlink" title="使用key参数实现多种排序"></a>使用key参数实现多种排序</h2><p>sorted函数的key参数必须是一个<code>函数</code>，且这个函数接受一个参数并返回一个值，这个返回后的新值将作为排序的依据。实际上key函数只被调用了一次，所以sorted函数执行的速度很快。</p>
+<p>在实现自定义排序的时候，我们常使用<code>lambda</code>函数作为key参数的值。</p>
+<p>下面将举几个使用key参数和lambda匿名函数排序的例子：</p>
+<h3 id="1-大小写不敏感的字符串列表排序"><a href="#1-大小写不敏感的字符串列表排序" class="headerlink" title="1.大小写不敏感的字符串列表排序"></a>1.大小写不敏感的字符串列表排序</h3><p>在直接使用sorted函数对字符串列表排序的时候，大写字母的ASCII码小于小写字母，所以大写字母开头的字符串会排在小写字母开头的字符串前面。有时候我么需要忽略大小写进行排序，此时可以使用str类的<code>lower</code>方法（或者<code>upper</code>方法）。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>sorted(<span class="string">"This is a test string from Andrew"</span>.split(), key=str.lower)</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'Andrew'</span>, <span class="string">'from'</span>, <span class="string">'is'</span>, <span class="string">'string'</span>, <span class="string">'test'</span>, <span class="string">'This'</span>]</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>再次强调key参数是一个函数，<code>key=str.lower()</code>的写法是错误的</p>
+</blockquote>
+<h3 id="2-对字典的value排序"><a href="#2-对字典的value排序" class="headerlink" title="2.对字典的value排序"></a>2.对字典的value排序</h3><p>我们经常需要对字典的value而不是key排序，此时可以使用lambda配合sorted函数的key参数实现：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'c'</span>: <span class="number">1</span>, <span class="string">'b'</span>: <span class="number">2</span>, <span class="string">'a'</span>: <span class="number">3</span>&#125;</span><br><span class="line">print(sorted(dic.items(), key=<span class="keyword">lambda</span> k: k[<span class="number">1</span>]))</span><br><span class="line"><span class="comment">#输出：[('c', 1), ('b', 2), ('a', 3)]</span></span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>要是想实现对字典key排序但是同时输出key和value的元组也可以如上实现，此时<code>key=lambda k: k[0]</code></p>
+</blockquote>
+<h3 id="3-list中嵌套list排序"><a href="#3-list中嵌套list排序" class="headerlink" title="3.list中嵌套list排序"></a>3.list中嵌套list排序</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">lis = [[<span class="number">4</span>, <span class="number">2</span>, <span class="number">9</span>], [<span class="number">1</span>, <span class="number">5</span>, <span class="number">6</span>], [<span class="number">7</span>, <span class="number">8</span>, <span class="number">3</span>]]</span><br><span class="line">print(sorted(lis, key=<span class="keyword">lambda</span> k: k[<span class="number">0</span>]))</span><br><span class="line"><span class="comment"># [[1, 5, 6], [4, 2, 9], [7, 8, 3]]</span></span><br><span class="line">print(sorted(lis, key=<span class="keyword">lambda</span> k: k[<span class="number">1</span>]))</span><br><span class="line"><span class="comment"># [[4, 2, 9], [1, 5, 6], [7, 8, 3]]</span></span><br><span class="line">print(sorted(lis, key=<span class="keyword">lambda</span> k: k[<span class="number">2</span>]))</span><br><span class="line"><span class="comment"># [[7, 8, 3], [1, 5, 6], [4, 2, 9]]</span></span><br><span class="line">print(sorted(lis, key=<span class="keyword">lambda</span> k: k[<span class="number">0</span>], reverse=<span class="keyword">True</span>))</span><br><span class="line"><span class="comment"># [[7, 8, 3], [4, 2, 9], [1, 5, 6]]</span></span><br></pre></td></tr></table></figure>
+<h3 id="4-dict嵌套dict排序"><a href="#4-dict嵌套dict排序" class="headerlink" title="4.dict嵌套dict排序"></a>4.dict嵌套dict排序</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;</span><br><span class="line">    <span class="string">'a'</span>: &#123;<span class="string">'x'</span>: <span class="number">3</span>, <span class="string">'y'</span>: <span class="number">2</span>, <span class="string">'z'</span>: <span class="number">1</span>&#125;,</span><br><span class="line">    <span class="string">'b'</span>: &#123;<span class="string">'x'</span>: <span class="number">2</span>, <span class="string">'y'</span>: <span class="number">1</span>, <span class="string">'z'</span>: <span class="number">3</span>&#125;,</span><br><span class="line">    <span class="string">'c'</span>: &#123;<span class="string">'x'</span>: <span class="number">1</span>, <span class="string">'y'</span>: <span class="number">3</span>, <span class="string">'z'</span>: <span class="number">2</span>&#125;,</span><br><span class="line">&#125;</span><br><span class="line">print(sorted(dic, key=<span class="keyword">lambda</span> k: dic[k][<span class="string">'x'</span>]))</span><br><span class="line"><span class="comment"># ['c', 'b', 'a']</span></span><br><span class="line">print(sorted(dic, key=<span class="keyword">lambda</span> k: dic[k][<span class="string">'y'</span>]))</span><br><span class="line"><span class="comment"># ['b', 'a', 'c']</span></span><br><span class="line">print(sorted(dic, key=<span class="keyword">lambda</span> k: dic[k][<span class="string">'z'</span>]))</span><br><span class="line"><span class="comment"># ['a', 'c', 'b']</span></span><br><span class="line">print(sorted(dic, key=<span class="keyword">lambda</span> k: dic[k][<span class="string">'x'</span>], reverse=<span class="keyword">True</span>))</span><br><span class="line"><span class="comment"># ['a', 'b', 'c']</span></span><br></pre></td></tr></table></figure>
+<h3 id="5-list嵌套dict排序"><a href="#5-list嵌套dict排序" class="headerlink" title="5.list嵌套dict排序"></a>5.list嵌套dict排序</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">lis = [</span><br><span class="line">    &#123;<span class="string">'x'</span>: <span class="number">3</span>, <span class="string">'y'</span>: <span class="number">2</span>, <span class="string">'z'</span>: <span class="number">1</span>&#125;,</span><br><span class="line">    &#123;<span class="string">'x'</span>: <span class="number">2</span>, <span class="string">'y'</span>: <span class="number">1</span>, <span class="string">'z'</span>: <span class="number">3</span>&#125;,</span><br><span class="line">    &#123;<span class="string">'x'</span>: <span class="number">1</span>, <span class="string">'y'</span>: <span class="number">3</span>, <span class="string">'z'</span>: <span class="number">2</span>&#125;,</span><br><span class="line">]</span><br><span class="line">print(sorted(lis, key=<span class="keyword">lambda</span> k: k[<span class="string">'x'</span>]))</span><br><span class="line"><span class="comment"># [&#123;'z': 2, 'x': 1, 'y': 3&#125;, &#123;'z': 3, 'x': 2, 'y': 1&#125;, &#123;'z': 1, 'x': 3, 'y': 2&#125;]</span></span><br><span class="line">print(sorted(lis, key=<span class="keyword">lambda</span> k: k[<span class="string">'y'</span>]))</span><br><span class="line"><span class="comment"># [&#123;'z': 3, 'x': 2, 'y': 1&#125;, &#123;'z': 1, 'x': 3, 'y': 2&#125;, &#123;'z': 2, 'x': 1, 'y': 3&#125;]</span></span><br><span class="line">print(sorted(lis, key=<span class="keyword">lambda</span> k: k[<span class="string">'z'</span>]))</span><br><span class="line"><span class="comment"># [&#123;'z': 1, 'x': 3, 'y': 2&#125;, &#123;'z': 2, 'x': 1, 'y': 3&#125;, &#123;'z': 3, 'x': 2, 'y': 1&#125;]</span></span><br><span class="line">print(sorted(lis, key=<span class="keyword">lambda</span> k: k[<span class="string">'x'</span>], reverse=<span class="keyword">True</span>))</span><br><span class="line"><span class="comment"># [&#123;'z': 1, 'x': 3, 'y': 2&#125;, &#123;'z': 3, 'x': 2, 'y': 1&#125;, &#123;'z': 2, 'x': 1, 'y': 3&#125;]</span></span><br></pre></td></tr></table></figure>
+<h3 id="6-dict嵌套list排序"><a href="#6-dict嵌套list排序" class="headerlink" title="6.dict嵌套list排序"></a>6.dict嵌套list排序</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;</span><br><span class="line">    <span class="string">'a'</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>],</span><br><span class="line">    <span class="string">'b'</span>: [<span class="number">2</span>, <span class="number">1</span>, <span class="number">3</span>],</span><br><span class="line">    <span class="string">'c'</span>: [<span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>],</span><br><span class="line">&#125;</span><br><span class="line">print(sorted(dic, key=<span class="keyword">lambda</span> k: dic[k][<span class="number">0</span>]))</span><br><span class="line"><span class="comment"># ['a', 'b', 'c']</span></span><br><span class="line">print(sorted(dic, key=<span class="keyword">lambda</span> k: dic[k][<span class="number">1</span>]))</span><br><span class="line"><span class="comment"># ['b', 'c', 'a']</span></span><br><span class="line">print(sorted(dic, key=<span class="keyword">lambda</span> k: dic[k][<span class="number">2</span>]))</span><br><span class="line"><span class="comment"># ['c', 'b', 'a']</span></span><br><span class="line">print(sorted(dic, key=<span class="keyword">lambda</span> k: dic[k][<span class="number">0</span>], reverse=<span class="keyword">True</span>))</span><br><span class="line"><span class="comment"># ['c', 'b', 'a']</span></span><br></pre></td></tr></table></figure>
+<hr>
+<blockquote>
+<p>参考链接：</p>
+<p><a href="https://www.polarxiong.com/archives/Python-%E4%BD%BF%E7%94%A8lambda%E5%BA%94%E5%AF%B9%E5%90%84%E7%A7%8D%E5%A4%8D%E6%9D%82%E6%83%85%E5%86%B5%E7%9A%84%E6%8E%92%E5%BA%8F-%E5%8C%85%E6%8B%AClist%E5%B5%8C%E5%A5%97dict.html" target="_blank" rel="noopener">https://www.polarxiong.com/archives/Python-%E4%BD%BF%E7%94%A8lambda%E5%BA%94%E5%AF%B9%E5%90%84%E7%A7%8D%E5%A4%8D%E6%9D%82%E6%83%85%E5%86%B5%E7%9A%84%E6%8E%92%E5%BA%8F-%E5%8C%85%E6%8B%AClist%E5%B5%8C%E5%A5%97dict.html</a></p>
+<p><a href="https://docs.python.org/3/howto/sorting.html#sortinghowto" target="_blank" rel="noopener">https://docs.python.org/3/howto/sorting.html#sortinghowto</a></p>
+</blockquote>
 
     </article>
     <!-- 前后页  -->
@@ -370,16 +405,16 @@ height:50vh;
         <li class="next">
             
                 <div class="nextSlogan">Next Post</div>
-                <a href= "/2018/04/15/img/4.16-4.22周计划/" title= 416-422周计划 >
-                    <div class="nextTitle">416-422周计划</div>
+                <a href= "/2018/02/26/序列模型/" title= 吴恩达 第五部分 序列模型 >
+                    <div class="nextTitle">吴恩达 第五部分 序列模型</div>
                 </a>
             
         </li>
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href= "/2018/04/15/动态规划算法总结/" title= 动态规划算法总结 >
-                    <div class="prevTitle">动态规划算法总结</div>
+                <a href= "/2018/01/22/Markdown常用语法/" title= Markdown 常用语法(个人总结） >
+                    <div class="prevTitle">Markdown 常用语法(个人总结）</div>
                 </a>
             
         </li>
@@ -504,7 +539,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#这周计划"><span class="toc-number">1.</span> <span class="toc-text">这周计划</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Python-排序总结"><span class="toc-number">1.</span> <span class="toc-text">Python 排序总结</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#sorted-函数介绍"><span class="toc-number">1.1.</span> <span class="toc-text">sorted 函数介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用key参数实现多种排序"><span class="toc-number">1.2.</span> <span class="toc-text">使用key参数实现多种排序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-大小写不敏感的字符串列表排序"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.大小写不敏感的字符串列表排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-对字典的value排序"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.对字典的value排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-list中嵌套list排序"><span class="toc-number">1.2.3.</span> <span class="toc-text">3.list中嵌套list排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-dict嵌套dict排序"><span class="toc-number">1.2.4.</span> <span class="toc-text">4.dict嵌套dict排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-list嵌套dict排序"><span class="toc-number">1.2.5.</span> <span class="toc-text">5.list嵌套dict排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-dict嵌套list排序"><span class="toc-number">1.2.6.</span> <span class="toc-text">6.dict嵌套list排序</span></a></li></ol></li></ol></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>

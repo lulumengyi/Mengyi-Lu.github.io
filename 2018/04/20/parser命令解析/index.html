@@ -9,7 +9,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
-    <title>416-422周计划 · Lmy&#39;s Blog</title>
+    <title>argparse模块 · Lmy&#39;s Blog</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -265,7 +265,7 @@
                 <a href="/" >Lmy&#39;s Blog.</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">416-422周计划</a>
+                <a href="#" class="post-name">argparse模块</a>
             </div>
     </div>
     
@@ -297,7 +297,7 @@ height:50vh;
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            416-422周计划
+            argparse模块
             <!-- 404 -->
             
         </h1>
@@ -315,15 +315,13 @@ height:50vh;
             
                 <div class= post-intro-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = 日常>日常</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = 计划>计划</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = tensorflow>tensorflow</a>
     
 </div>
             
             <div class="post-intro-meta">
                 <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                <span class="post-intro-time">2018/04/15</span>
+                <span class="post-intro-time">2018/04/20</span>
                 
                 <span id="busuanzi_container_page_pv" class="busuanzi-pv">
                     <span class="iconfont-archer">&#xe602;</span>
@@ -352,17 +350,21 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <h1 id="这周计划"><a href="#这周计划" class="headerlink" title="这周计划"></a>这周计划</h1><ol>
-<li><p>计划</p>
-<ul>
-<li>至少1篇论文</li>
-<li>跟tensorflow教程</li>
-<li>刷编程题</li>
-<li>跑实验记录</li>
-</ul>
-<p>保持上进 保持清醒</p>
-</li>
+        <p>argparse模块使得编写用户友好的命令行接口非常容易。程序只需定义好它要求的参数，然后argparse将负责如何从sys.argv中解析出这些参数。argparse模块还会自动生成帮助和使用信息并且当用户赋给程序非法的参数时产生错误信息。</p>
+<p>使用argparse模块一般需要三个步骤：</p>
+<ol>
+<li>创建一个解析器</li>
 </ol>
+<p>使用argparse的第一步是创建一个ArgumentParser对象：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span> parser= argparse.ArgumentParser()</span><br></pre></td></tr></table></figure></p>
+<ol>
+<li>添加参数</li>
+</ol>
+<p>通过调用add_argument()方法向ArgumentParser添加程序的参数信息。通常情况下，这些信息告诉ArgumentParser如何接收命令行上的字符串并将它们转换成对象。这些信息被保存下来并在调用parse_args()时用到。例如：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>parser.add_argument(<span class="string">'--name'</span>, help=<span class="string">'username'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>parser.add_argument(<span class="string">'--pass'</span>, help=<span class="string">'password '</span>)</span><br></pre></td></tr></table></figure></p>
+<ol>
+<li>解析参数</li>
+</ol>
+<p>ArgumentParser通过parse_args()方法解析参数。它将检查命令行，把每个参数转换成恰当的类型并采取恰当的动作。在大部分情况下，这意味着将从命令行中解析出来的属性建立一个简单的 Namespace对象。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>argments = parser.parse_args([<span class="string">'--name'</span>,<span class="string">'li'</span>,<span class="string">'--pass'</span>,<span class="string">'si'</span>])</span><br></pre></td></tr></table></figure></p>
+<p>在脚本中，parse_args() 调用一般不带参数，ArgumentParser 将根据sys.argv自动确定命令行参数。</p>
 
     </article>
     <!-- 前后页  -->
@@ -370,16 +372,16 @@ height:50vh;
         <li class="next">
             
                 <div class="nextSlogan">Next Post</div>
-                <a href= "/2018/04/15/img/4.16-4.22周计划/" title= 416-422周计划 >
-                    <div class="nextTitle">416-422周计划</div>
+                <a href= "/2018/04/23/集成学习/" title=  >
+                    <div class="nextTitle">[Untitled Post]</div>
                 </a>
             
         </li>
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href= "/2018/04/15/动态规划算法总结/" title= 动态规划算法总结 >
-                    <div class="prevTitle">动态规划算法总结</div>
+                <a href= "/2018/04/15/Q-learning/" title= 论文学习笔记-Dual-tensor >
+                    <div class="prevTitle">论文学习笔记-Dual-tensor</div>
                 </a>
             
         </li>
@@ -504,7 +506,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#这周计划"><span class="toc-number">1.</span> <span class="toc-text">这周计划</span></a></li></ol>
+        
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>

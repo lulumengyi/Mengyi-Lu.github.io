@@ -9,7 +9,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
-    <title>416-422周计划 · Lmy&#39;s Blog</title>
+    <title>tensorflow中的一些函数 · Lmy&#39;s Blog</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -265,7 +265,7 @@
                 <a href="/" >Lmy&#39;s Blog.</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">416-422周计划</a>
+                <a href="#" class="post-name">tensorflow中的一些函数</a>
             </div>
     </div>
     
@@ -297,7 +297,7 @@ height:50vh;
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            416-422周计划
+            tensorflow中的一些函数
             <!-- 404 -->
             
         </h1>
@@ -315,9 +315,7 @@ height:50vh;
             
                 <div class= post-intro-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = 日常>日常</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = 计划>计划</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = tensorflow>tensorflow</a>
     
 </div>
             
@@ -352,17 +350,28 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <h1 id="这周计划"><a href="#这周计划" class="headerlink" title="这周计划"></a>这周计划</h1><ol>
-<li><p>计划</p>
-<ul>
-<li>至少1篇论文</li>
-<li>跟tensorflow教程</li>
-<li>刷编程题</li>
-<li>跑实验记录</li>
-</ul>
-<p>保持上进 保持清醒</p>
-</li>
-</ol>
+        <h1 id="1-tf-argmax"><a href="#1-tf-argmax" class="headerlink" title="1.tf.argmax"></a>1.tf.argmax</h1><p>tf.argmax(input, axis=None, name=None, dimension=None)<br>此函数是对矩阵按行或列计算最大值</p>
+<p>参数<br>input：输入Tensor<br>axis：0表示按列，1表示按行<br>name：名称<br>dimension：和axis功能一样，默认axis取值优先。新加的字段<br>返回：Tensor 一般是行或列的<strong>最大值下标</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf  </span><br><span class="line"></span><br><span class="line">a=tf.Variable(tf.random_uniform([<span class="number">3</span>,<span class="number">4</span>],minval=<span class="number">-1</span>,maxval=<span class="number">1</span>))  </span><br><span class="line">b=tf.argmax(input=a,axis=<span class="number">0</span>)  </span><br><span class="line">c=tf.argmax(input=a,dimension=<span class="number">1</span>)   <span class="comment">#此处用dimesion或用axis是一样的  </span></span><br><span class="line">sess = tf.Session()</span><br><span class="line">sess.run(tf.initialize_all_variables())  </span><br><span class="line">print(sess.run(a))  </span><br><span class="line"><span class="comment">#[[ 0.04261756 -0.34297419 -0.87816691 -0.15430689]  </span></span><br><span class="line"><span class="comment"># [ 0.18663144  0.86972666 -0.06103253  0.38307118]  </span></span><br><span class="line"><span class="comment"># [ 0.84588599 -0.45432305 -0.39736366  0.38526249]]  </span></span><br><span class="line">print(sess.run(b))  </span><br><span class="line"><span class="comment">#[2 1 1 2]  </span></span><br><span class="line">print(sess.run(c))  </span><br><span class="line"><span class="comment">#[0 1 0]</span></span><br></pre></td></tr></table></figure>
+<h1 id="2-python-enumerate"><a href="#2-python-enumerate" class="headerlink" title="2.python enumerate()"></a>2.python enumerate()</h1><p>enumerate() 函数用于将一个可遍历的数据对象(如列表、元组或字符串)组合为一个索引序列，同时列出数据和数据下标，一般用在 for 循环当中。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;seasons = [<span class="string">'Spring'</span>, <span class="string">'Summer'</span>, <span class="string">'Fall'</span>, <span class="string">'Winter'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(enumerate(seasons))</span><br><span class="line">[(<span class="number">0</span>, <span class="string">'Spring'</span>), (<span class="number">1</span>, <span class="string">'Summer'</span>), (<span class="number">2</span>, <span class="string">'Fall'</span>), (<span class="number">3</span>, <span class="string">'Winter'</span>)]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(enumerate(seasons, start=<span class="number">1</span>))       <span class="comment"># 小标从 1 开始</span></span><br><span class="line">[(<span class="number">1</span>, <span class="string">'Spring'</span>), (<span class="number">2</span>, <span class="string">'Summer'</span>), (<span class="number">3</span>, <span class="string">'Fall'</span>), (<span class="number">4</span>, <span class="string">'Winter'</span>)]</span><br></pre></td></tr></table></figure></p>
+<h1 id="3-tf-reduce-mean"><a href="#3-tf-reduce-mean" class="headerlink" title="3.tf.reduce_mean"></a>3.tf.reduce_mean</h1><p>tf.reduce_mean(input_tensor,  axis=None,  keep_dims=False,  name=None,  reduction_indices=None)<br>input_tensor: 被计算的张量，确保为数字类型。</p>
+<p>axis: 方向数轴，如果没有指明，默认是所有数轴都减小为1。</p>
+<p>keep_dims: 如果定义true, 则保留维数，但数量个数为0.</p>
+<p>name: 操作过程的名称。</p>
+<p>reduction_indices: 为了旧函数兼容的数轴。</p>
+<p>返回值:</p>
+<p>降低维数的平均值。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x = tf.constant([[<span class="number">1.</span>, <span class="number">1.</span>], [<span class="number">2.</span>, <span class="number">2.</span>]])</span><br><span class="line">tf.reduce_mean(x)  <span class="comment"># 1.5 如果不指定第二个参数，那么就在所有的元素中取平均值</span></span><br><span class="line">tf.reduce_mean(x, <span class="number">0</span>)  <span class="comment"># [1.5, 1.5]指定第二个参数为0，则第一维的元素取平均值，即每一列求平均值</span></span><br><span class="line">tf.reduce_mean(x, <span class="number">1</span>)  <span class="comment"># [1.,  2.]指定第二个参数为1，则第二维的元素取平均值，即每一行求平均值</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x = tf.constant([<span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>])</span><br><span class="line">tf.reduce_mean(x)  <span class="comment"># 0</span></span><br><span class="line">y = tf.constant([<span class="number">1.</span>, <span class="number">0.</span>, <span class="number">1.</span>, <span class="number">0.</span>])</span><br><span class="line">tf.reduce_mean(y)  <span class="comment"># 0.5</span></span><br></pre></td></tr></table></figure>
+<h1 id="4-tf-equal"><a href="#4-tf-equal" class="headerlink" title="4.tf.equal"></a>4.tf.equal</h1><p>tf.equal(A, B)是对比这两个矩阵或者向量的相等的元素，如果是相等的那就返回True，反正返回False，返回的值的矩阵维度和A是一样的.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf  </span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np  </span><br><span class="line"></span><br><span class="line">A = [[<span class="number">1</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]]  </span><br><span class="line">B = [[<span class="number">1</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">3</span>,<span class="number">2</span>]]  </span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:  </span><br><span class="line">    print(sess.run(tf.equal(A, B)))</span><br><span class="line">[[ <span class="keyword">True</span>  <span class="keyword">True</span>  <span class="keyword">True</span> <span class="keyword">False</span> <span class="keyword">False</span>]]</span><br></pre></td></tr></table></figure></p>
+<h1 id="5-tf-cast"><a href="#5-tf-cast" class="headerlink" title="5.tf.cast( )"></a>5.tf.cast( )</h1><p>对输入tensor进行类型转换。<br>tf.cast(x, dtype, name = None)<br>x：输入tensor<br>dtype：目标数据类型，将x的数据类型转化成dtype。<br>name：自定义输出tensor的名字。</p>
+<p>返回：<br>1个tensor</p>
+<p>x原来的数据类型是int，现在要把其转化成bool。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf  </span><br><span class="line"></span><br><span class="line">a = tf.Variable([<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>])</span><br><span class="line">b = tf.cast(a, dtype = tf.bool)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">    sess.run(tf.global_variables_initializer())</span><br><span class="line">    print(sess.run(b))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出 [ True False False  True  True]</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="6-tensorflow-中-softmax-cross-entropy-with-logits-与-sparse-softmax-cross-entropy-with-logits-的区别"><a href="#6-tensorflow-中-softmax-cross-entropy-with-logits-与-sparse-softmax-cross-entropy-with-logits-的区别" class="headerlink" title="6.tensorflow 中 softmax_cross_entropy_with_logits 与 sparse_softmax_cross_entropy_with_logits 的区别"></a>6.tensorflow 中 softmax_cross_entropy_with_logits 与 sparse_softmax_cross_entropy_with_logits 的区别</h1><p>这两个输出结果是一样的。<br>这两个的区别是:</p>
+<p>For sparse_softmax_cross_entropy_with_logits, labels must have the shape <strong>[batch_size]</strong> and the dtype int32 or int64. Each label is an int in range [0, num_classes-1].<br>For softmax_cross_entropy_with_logits, labels must have the shape <strong>[batch_size, num_classes]</strong> and dtype float32 or float64.<br>Labels used in softmax_cross_entropy_with_logits are the one hot version of labels used in sparse_softmax_cross_entropy_with_logits.</p>
+<p>Another tiny difference is that with sparse_softmax_cross_entropy_with_logits, you can give -1 as a label to have loss 0 on this label.</p>
+<h1 id="7-tf-matmul和tf-multiply"><a href="#7-tf-matmul和tf-multiply" class="headerlink" title="7.tf.matmul和tf.multiply"></a>7.tf.matmul和tf.multiply</h1><p>矩阵乘法和点乘</p>
+<h1 id="8-tf-expand-dims"><a href="#8-tf-expand-dims" class="headerlink" title="8.tf.expand_dims"></a>8.tf.expand_dims</h1><p>tf.expand_dims(input, axis=None, name=None, dim=None) 在第axis位置增加一个维度。<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 't' is a tensor of shape [2]</span></span><br><span class="line">shape(expand_dims(t, 0)) ==&gt; [1, 2]</span><br><span class="line">shape(expand_dims(t, 1)) ==&gt; [2, 1]</span><br><span class="line">shape(expand_dims(t, -1)) ==&gt; [2, 1]</span><br><span class="line"><span class="comment"># 't2' is a tensor of shape [2, 3, 5]</span></span><br><span class="line">shape(expand_dims(t2, 0)) ==&gt; [1, 2, 3, 5]</span><br><span class="line">shape(expand_dims(t2, 2)) ==&gt; [2, 3, 1, 5]</span><br><span class="line">shape(expand_dims(t2, 3)) ==&gt; [2, 3, 5, 1]</span><br></pre></td></tr></table></figure></p>
+<h1 id="9-tf-tile"><a href="#9-tf-tile" class="headerlink" title="9.tf.tile"></a>9.tf.tile</h1><p>tf.tile(input, multiples, name=None)<br>output tensor 的第i维有 input.dims(i) * multiples[i] 个元素<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line">temp = tf.tile([[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]],[<span class="number">1</span>,<span class="number">1</span>])</span><br><span class="line">temp2 = tf.tile([[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]],[<span class="number">2</span>,<span class="number">1</span>])</span><br><span class="line">temp3 = tf.tile([[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]],[<span class="number">2</span>,<span class="number">2</span>])</span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">    print(sess.run(temp))</span><br><span class="line">    print(sess.run(temp2))</span><br><span class="line">    print(sess.run(temp3))</span><br><span class="line">    <span class="comment">#输出：</span></span><br><span class="line">    [[<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>]</span><br><span class="line">    [<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>]]</span><br><span class="line"></span><br><span class="line">    [[<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>]</span><br><span class="line">    [<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>]</span><br><span class="line">    [<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>]</span><br><span class="line">    [<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>]]</span><br><span class="line"></span><br><span class="line">    [[<span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span>]</span><br><span class="line">    [<span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span>]</span><br><span class="line">    [<span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span>]</span><br><span class="line">    [<span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span>]]</span><br></pre></td></tr></table></figure></p>
 
     </article>
     <!-- 前后页  -->
@@ -370,16 +379,16 @@ height:50vh;
         <li class="next">
             
                 <div class="nextSlogan">Next Post</div>
-                <a href= "/2018/04/15/img/4.16-4.22周计划/" title= 416-422周计划 >
-                    <div class="nextTitle">416-422周计划</div>
+                <a href= "/2018/04/15/论文学习笔记 -RL for Text classification/" title= 论文学习笔记-Learning Structured Representation for Text Classification via Reinforcement Learning >
+                    <div class="nextTitle">论文学习笔记-Learning Structured Representation for Text Classification via Reinforcement Learning</div>
                 </a>
             
         </li>
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href= "/2018/04/15/动态规划算法总结/" title= 动态规划算法总结 >
-                    <div class="prevTitle">动态规划算法总结</div>
+                <a href= "/2018/04/15/一篇反思/" title= 乱七八糟的反思 >
+                    <div class="prevTitle">乱七八糟的反思</div>
                 </a>
             
         </li>
@@ -504,7 +513,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#这周计划"><span class="toc-number">1.</span> <span class="toc-text">这周计划</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-tf-argmax"><span class="toc-number">1.</span> <span class="toc-text">1.tf.argmax</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-python-enumerate"><span class="toc-number">2.</span> <span class="toc-text">2.python enumerate()</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-tf-reduce-mean"><span class="toc-number">3.</span> <span class="toc-text">3.tf.reduce_mean</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-tf-equal"><span class="toc-number">4.</span> <span class="toc-text">4.tf.equal</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-tf-cast"><span class="toc-number">5.</span> <span class="toc-text">5.tf.cast( )</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-tensorflow-中-softmax-cross-entropy-with-logits-与-sparse-softmax-cross-entropy-with-logits-的区别"><span class="toc-number">6.</span> <span class="toc-text">6.tensorflow 中 softmax_cross_entropy_with_logits 与 sparse_softmax_cross_entropy_with_logits 的区别</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-tf-matmul和tf-multiply"><span class="toc-number">7.</span> <span class="toc-text">7.tf.matmul和tf.multiply</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-tf-expand-dims"><span class="toc-number">8.</span> <span class="toc-text">8.tf.expand_dims</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-tf-tile"><span class="toc-number">9.</span> <span class="toc-text">9.tf.tile</span></a></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
