@@ -356,21 +356,21 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <h2 id="论文题目：Dual-Tensor-Model-for-Detecting-Asymmetric-Lexico-Semantic-Relations"><a href="#论文题目：Dual-Tensor-Model-for-Detecting-Asymmetric-Lexico-Semantic-Relations" class="headerlink" title="论文题目：Dual Tensor Model for Detecting Asymmetric Lexico-Semantic Relations"></a>论文题目：Dual Tensor Model for Detecting Asymmetric Lexico-Semantic Relations</h2><p><img src="img/1.png" alt=""></p>
+        <h2 id="论文题目：Dual-Tensor-Model-for-Detecting-Asymmetric-Lexico-Semantic-Relations"><a href="#论文题目：Dual-Tensor-Model-for-Detecting-Asymmetric-Lexico-Semantic-Relations" class="headerlink" title="论文题目：Dual Tensor Model for Detecting Asymmetric Lexico-Semantic Relations"></a>论文题目：Dual Tensor Model for Detecting Asymmetric Lexico-Semantic Relations</h2><p><img src="https://i.loli.net/2018/04/23/5addddb9dd860.png" alt=""></p>
 <ol>
 <li><p>概述</p><p><br>非对称关系是指两个(类)事物之间，A与B有着某种关系，而B与A不具有此种关系。<br>语义的上下位关系就是典型的非对称关系，对于非对称关系的检测，现有很多模型只是含蓄的解释不对称，并使用相同的概念表示来支持对称和非对称关系的检测。这篇文章主要是提出了一种能够捕捉非对称关系双张量模型，用它来显式地对不对称进行建模，并通过一对张量来捕获非专门化和专门的词嵌入之间的转换。</p>
 <blockquote>
 <p>主要的几个点：</p><p><br> 1.非专门化的词向量（比如直接拿别人预训练好的词向量）对于检测特定的语义关系没有很好的效果。因此，我们需要得出更适合于检测特定非对称关系的专门词向量表示。</p><p>2. 通过一个定义良好的转换函数，可以实现从非专门化的词到关系专用的词嵌入表示的转换。通过这样的转换函数，判断是否是存在非对称关系，可以减少一次性specialize整个unspecialized embeddings的需求。</p><p>3.每个词都有两个不同的关系specialized embeddings，一个词的非专业的分布向量可能会被转换成几个specialized embeddings而不是一个。这样，模型就可以隐式地解释一词多义。不同的specialized embeddings可能会捕捉到不同含义的多义词的不对称性质。</p>
 </blockquote>
 </li>
-<li><p>模型框架<br><img src="img/2.png" alt=""><br>模型框架大概如上图所示。这个模型主要是分两个阶段。</p>
+<li><p>模型框架<br><img src="https://i.loli.net/2018/04/23/5addddcb0c1ab.png" alt=""><br>模型框架大概如上图所示。这个模型主要是分两个阶段。</p>
 </li>
 </ol>
 <p>第一个阶段是将unspecialized embeddings 转换为 specialized embeddings，其中unspecialized embeddings只能捕捉词的一般语义属性，但无法区分不同类型的语义关系，specialized embeddings是指能够运用在特定的语义关系分类，能够区分其他类型的语义关系。</p>
 <p>具体实现就是通过引入two specialization tensors（W [1:k]） 两个专门的张量(即模型名称双张量)来显式地模拟不对称，对unspecialized embeddings 进行运算，进行一下specialize。进行如下所示的运算。k是一个超参数，相当于我们可以把词向量映射到多维空间，能够比较好的捕捉一词多义的特征信息。</p>
-<p><img src="img/3.png" alt=""></p><p><br>对应的tensorflow代码：<br><img src="img/4.png" alt=""></p><p><br>通过这样的运算后，当预测hypernymy时，双张量可以确保cat猫这个单词的 specialized representation，如猫-动物，橘猫-猫，这两对词中，猫的词向量表示是不同的。<br>第二阶段是通过利用双张量，将非专门的词嵌入转化为上述运算得出的一组专门的词向量，我们接下来用它来预测词对之间的非对称关系是否成立。</p><p><br><img src="img/5.png" alt=""></p><p><br><img src="img/6.png" alt=""></p><p><br>对应的tensorflow代码：</p><p><br><img src="img/7.png" alt=""></p><p></p>
+<p><img src="https://i.loli.net/2018/04/23/5addddd834f3d.png" alt=""></p><p><br>对应的tensorflow代码：<br><img src="https://i.loli.net/2018/04/23/5addddeb5ba0f.png" alt=""></p><p><br>通过这样的运算后，当预测hypernymy时，双张量可以确保cat猫这个单词的 specialized representation，如猫-动物，橘猫-猫，这两对词中，猫的词向量表示是不同的。<br>第二阶段是通过利用双张量，将非专门的词嵌入转化为上述运算得出的一组专门的词向量，我们接下来用它来预测词对之间的非对称关系是否成立。</p><p><br><img src="https://i.loli.net/2018/04/23/5addddfb21c8e.png" alt=""></p><p><br><img src="https://i.loli.net/2018/04/23/5addde0b78d34.png" alt=""></p><p><br>对应的tensorflow代码：</p><p><br><img src="https://i.loli.net/2018/04/23/5addde23dace5.png" alt=""></p><p></p>
 <ol>
-<li>目前所做的实验：<p><br>3.1 调参实验</p><p><br><img src="img/8.png" alt=""></p><p><br>3.2 aba卷积实验</p><p><br><img src="img/9.png" alt=""></p><p><br>3.2 用dual-tensor第一阶段后过CNN </p><p><br><img src="img/10.png" alt=""></p><p><br>4.</p></li>
+<li>目前所做的实验：<p><br>3.1 调参实验</p><p><br><img src="https://i.loli.net/2018/04/23/5addde329e73e.png" alt=""></p><p><br>3.2 aba卷积实验</p><p><br><img src="https://i.loli.net/2018/04/23/5addde4759393.png" alt=""></p><p><br>3.2 用dual-tensor第一阶段后过CNN </p><p><br><img src="https://i.loli.net/2018/04/23/5addde6892491.png" alt=""></p><p><br>4.</p></li>
 </ol>
 
     </article>
@@ -379,8 +379,8 @@ height:50vh;
         <li class="next">
             
                 <div class="nextSlogan">Next Post</div>
-                <a href= "/2018/04/20/parser命令解析/" title= argparse模块 >
-                    <div class="nextTitle">argparse模块</div>
+                <a href= "/2018/04/20/动态规划算法总结/" title= 动态规划算法总结 >
+                    <div class="nextTitle">动态规划算法总结</div>
                 </a>
             
         </li>
@@ -695,24 +695,6 @@ top:50vh;
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     <div class="total-archive"> Total : 15 </div>
     
     <div class="post-archive">
@@ -725,7 +707,75 @@ top:50vh;
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">04/22</span><a class="archive-post-title" href= "/2018/04/22/论文学习笔记/" >论文学习笔记-Effectively Combining Recurrent and Convolutional Neural Networks for Relation Classification and Extraction</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/22</span><a class="archive-post-title" href= "/2018/04/22/集成学习/" >集成学习-学习笔记</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/21</span><a class="archive-post-title" href= "/2018/04/21/tensorflow基础/" >tensorflow中的一些函数</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/20</span><a class="archive-post-title" href= "/2018/04/20/parser命令解析/" >tensorflow - argparse模块</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/20</span><a class="archive-post-title" href= "/2018/04/20/leetcode练习1/" >leetcode—数组</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">04/20</span><a class="archive-post-title" href= "/2018/04/20/动态规划算法总结/" >动态规划算法总结</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/Q-learning/" >论文学习笔记-Dual-tensor</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/论文学习笔记 -RL for Text classification/" >论文学习笔记-Learning Structured Representation for Text Classification via Reinforcement Learning</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/4.16-4.22周计划/" >416-422周计划</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2018/03/14/强化学习概述/" >强化学习概述</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2018/01/21/hello-world/" >Hello World</a>
         </li>
     
     
@@ -753,69 +803,6 @@ top:50vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/22</span><a class="archive-post-title" href= "/2018/04/22/论文学习笔记/" >论文学习笔记-Effectively Combining Recurrent and Convolutional Neural Networks for Relation Classification and Extraction</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">04/22</span><a class="archive-post-title" href= "/2018/04/22/集成学习/" >集成学习-学习笔记</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">04/20</span><a class="archive-post-title" href= "/2018/04/20/leetcode练习1/" >leetcode—数组</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">04/20</span><a class="archive-post-title" href= "/2018/04/20/parser命令解析/" >argparse模块</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/论文学习笔记 -RL for Text classification/" >论文学习笔记-Learning Structured Representation for Text Classification via Reinforcement Learning</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/Q-learning/" >论文学习笔记-Dual-tensor</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/4.16-4.22周计划/" >416-422周计划</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> Invalid date </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2018/01/21/hello-world/" >Hello World</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> 2018 </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/tensorflow基础/" >tensorflow中的一些函数</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">03/13</span><a class="archive-post-title" href= "/2018/03/13/313-319周计划/" >313-319周计划</a>
         </li>
     
@@ -829,20 +816,6 @@ top:50vh;
             <span class="archive-post-date">01/21</span><a class="archive-post-title" href= "/2018/01/21/Lmy的第一篇博客/" >Lmy的一篇博客</a>
         </li>
     
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> Invalid date </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2018/03/14/强化学习概述/" >强化学习概述</a>
-        </li>
-    
     </div>
   </div>
         <div class="sidebar-panel-tags">
@@ -852,21 +825,21 @@ top:50vh;
     
         <span class="sidebar-tag-name" data-tags="计划"><span class="iconfont-archer">&#xe606;</span>计划</span>
     
+        <span class="sidebar-tag-name" data-tags="算法"><span class="iconfont-archer">&#xe606;</span>算法</span>
+    
+        <span class="sidebar-tag-name" data-tags="tensorflow"><span class="iconfont-archer">&#xe606;</span>tensorflow</span>
+    
         <span class="sidebar-tag-name" data-tags="学习笔记"><span class="iconfont-archer">&#xe606;</span>学习笔记</span>
     
         <span class="sidebar-tag-name" data-tags="语义关系分类"><span class="iconfont-archer">&#xe606;</span>语义关系分类</span>
     
         <span class="sidebar-tag-name" data-tags="文本分类"><span class="iconfont-archer">&#xe606;</span>文本分类</span>
     
-        <span class="sidebar-tag-name" data-tags="算法"><span class="iconfont-archer">&#xe606;</span>算法</span>
-    
-        <span class="sidebar-tag-name" data-tags="tensorflow"><span class="iconfont-archer">&#xe606;</span>tensorflow</span>
+        <span class="sidebar-tag-name" data-tags="RL"><span class="iconfont-archer">&#xe606;</span>RL</span>
     
         <span class="sidebar-tag-name" data-tags="CNN"><span class="iconfont-archer">&#xe606;</span>CNN</span>
     
         <span class="sidebar-tag-name" data-tags="RNN"><span class="iconfont-archer">&#xe606;</span>RNN</span>
-    
-        <span class="sidebar-tag-name" data-tags="RL"><span class="iconfont-archer">&#xe606;</span>RL</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
