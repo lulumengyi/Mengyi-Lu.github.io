@@ -9,7 +9,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
-    <title>Lmy&#39;s Blog</title>
+    <title>论文学习笔记-Effectively Combining Recurrent and Convolutional Neural Networks for Relation Classification and Extraction · Lmy&#39;s Blog</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -265,7 +265,7 @@
                 <a href="/" >Lmy&#39;s Blog.</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name"></a>
+                <a href="#" class="post-name">论文学习笔记-Effectively Combining Recurrent and Convolutional Neural Networks for Relation Classification and Extraction</a>
             </div>
     </div>
     
@@ -297,7 +297,7 @@ height:50vh;
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            [Untitled Post]
+            论文学习笔记-Effectively Combining Recurrent and Convolutional Neural Networks for ...
             <!-- 404 -->
             
         </h1>
@@ -306,6 +306,8 @@ height:50vh;
             <!-- 主页副标题  -->
             
             
+                学习笔记
+            
             <!-- 404 -->
             
         </p>
@@ -313,9 +315,19 @@ height:50vh;
         
             <!-- 文章页标签  -->
             
+                <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = 学习笔记>学习笔记</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = 文本分类>文本分类</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = RL>RL</a>
+    
+</div>
+            
             <div class="post-intro-meta">
                 <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                <span class="post-intro-time">2018/04/23</span>
+                <span class="post-intro-time">2018/04/15</span>
                 
                 <span id="busuanzi_container_page_pv" class="busuanzi-pv">
                     <span class="iconfont-archer">&#xe602;</span>
@@ -344,18 +356,54 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        
+        <h1 id="ETH-DS3Lab-at-SemEval-2018-Task-：Effectively-Combining-Recurrent-and-Convolutional-Neural-Networks-for-Relation-Classification-and-Extraction"><a href="#ETH-DS3Lab-at-SemEval-2018-Task-：Effectively-Combining-Recurrent-and-Convolutional-Neural-Networks-for-Relation-Classification-and-Extraction" class="headerlink" title="ETH-DS3Lab at SemEval-2018 Task ：Effectively Combining Recurrent and Convolutional Neural Networks for Relation Classification and Extraction"></a>ETH-DS3Lab at SemEval-2018 Task ：Effectively Combining Recurrent and Convolutional Neural Networks for Relation Classification and Extraction</h1><h1 id="概论"><a href="#概论" class="headerlink" title="概论"></a>概论</h1><p>本文来自苏黎世联邦理工学院 DS3Lab，文章针对实体关系抽取任务进行了非常系统的实验，并在第十二届国际语义评测比赛 SemEval 2018 的语义关系抽取和分类任务上获得冠军。</p>
+<p>#关于评测<br>SemEval Task 7 子任务介绍：</p>
+<p>Subtask1.1 实体对关系分类（给定实体对，句子，关系，不包含NA类别）</p>
+<p>Subtask1.2 加噪数据实体对关系分类（给定实体对，句子，关系，不包含NA类别）</p>
+<p>Subtask2 实体关系分类（给定实体位置，句子，关系，包含NA类别）</p>
+<h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>本文主要提出了一个基于卷积和递归神经网络集成的关系分类和提取系统，该系统在SemEval 2018任务7的4个子任务中排名第一。<br>本文分析了各种特征（以及trick）最实验结果的影响。如下图所示：</p>
+<p><img src="img/12.png" alt=""></p>
+<p>分别解释一下这些feature的含义：</p>
+<p>ICC : 原始CNN分类器</p>
+<p>CSD: 将subtask 1.1 1.2的数据合在一起训练</p>
+<p>OP: 调参</p>
+<p>RS: 数据增广：将句子反转</p>
+<p>WCE : 加权的Cross entropy， 样本数量越少的数据分配越高的权重。</p>
+<p>EN ： 模型集成</p>
+<p>RPE: 引入位置信息</p>
+<p>PTE: 引入POS信息</p>
+<p>CRC : RNN + CNN</p>
+<p>GD： 将训练集和测试集混在一起，生成新的数据。新的数据使用语言模型打分，分数超出一定阈值并且句子长度足够长才算有效。<br><img src="img/13.png" alt=""><br>WNC : 将CNN的prob和RNN的prob按句子长度加权求和</p>
+<h1 id="模型结构"><a href="#模型结构" class="headerlink" title="模型结构"></a>模型结构</h1><p><img src="img/14.png" alt=""></p>
+<p>本文的模型由20对CNN和RNN网络 ensemble而成。模型输入是 word embedding + POS + RPE,  CNNN部分：一层conv + reu + maxpooling + FC  ， 没有dropout, 输出prob。 RNN 部分：不加padding的Bi-LSTM + FC + dropout, 输出prob。这样的网络训练20个，得到40个prob, 取平均。</p>
+<h1 id="数据预处理"><a href="#数据预处理" class="headerlink" title="数据预处理"></a>数据预处理</h1><p>将所有句子两个实体之间的部分切出来，剩下的去除。然后对于句子长度长于一定量（本文&gt;19）的句子删除。<br><img src="img/15.png" alt=""></p>
+<p>本文做了实验，句子长度对于分类效果的影响。可见句子长度截断阈值为19的时候效果最好。</p>
+<h1 id="数据清洗"><a href="#数据清洗" class="headerlink" title="数据清洗"></a>数据清洗</h1><p>有的实体里面包含了别的实体，本文将这些实体分开。例如有的句子是 “信号处理” ， “信号处理”可以是一本书，作为一个实体，“处理”也可以作为一个实体，这样的句子变成两句，一个只标记“处理”， 另一个标记“信号处理”。 （原文中举的例子有些奇怪。。。）</p>
+<p>[] () 这两种括号内的token也删除。有些名词里面带的数字替换成随机token。</p>
+<p><img src="img/16.png" alt=""></p>
+<p>本文使用了一种数据増广方式（前面提到的RS）：句子反转。上图中的关系是非对称的关系，将句子按字反转之后，实体对的前后关系发生反转，他们之前的关系也就发生了反转，于是使用一种替换的方式直接将实体中间的字换成表达相反关系的token。 例如图中表达的是“由…组成的关系”， 前者“corpus”由后者“text”组成。将句子反转之后，他们之间的位置反转，中间的token “ from a “ 表示”由…组成的关系“相反的关系。这样新生成的句子虽然是语法上不通，但是可以提升Performace。</p>
+<p><img src="img/17.png" alt=""></p>
+<p>极为详细的grid search， 这在一定程度上是在拟合数据集了。</p>
+<p>作者做实验的时候发现，单独使用RNN或者CNN, 效果都差不多，但是两种模型ensemble的时候效果会有提升。更进一步的结果是，作者发现RNN模型对长一些的句子比CNN效果好。于是本文使用如下公式对RNN的prob加权。</p>
+<p>值得借鉴的地方：比如句子反转RS, 加权的cross entropy, ensemble CNN 和 RNN 模型，以及对于RNN和CNN根据句子长度加权预测的方式</p>
+<p>PMI</p>
+
     </article>
     <!-- 前后页  -->
     <ul class="post-paginator">
         <li class="next">
             
+                <div class="nextSlogan">Next Post</div>
+                <a href= "/2018/04/15/论文学习笔记 -RL for Text classification/" title= 论文学习笔记-Learning Structured Representation for Text Classification via Reinforcement Learning >
+                    <div class="nextTitle">论文学习笔记-Learning Structured Representation for Text Classification via Reinforcement Learning</div>
+                </a>
+            
         </li>
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href= "/2018/04/20/parser命令解析/" title= argparse模块 >
-                    <div class="prevTitle">argparse模块</div>
+                <a href= "/2018/04/15/tensorflow基础/" title= tensorflow中的一些函数 >
+                    <div class="prevTitle">tensorflow中的一些函数</div>
                 </a>
             
         </li>
@@ -480,7 +528,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ETH-DS3Lab-at-SemEval-2018-Task-：Effectively-Combining-Recurrent-and-Convolutional-Neural-Networks-for-Relation-Classification-and-Extraction"><span class="toc-number">1.</span> <span class="toc-text">ETH-DS3Lab at SemEval-2018 Task ：Effectively Combining Recurrent and Convolutional Neural Networks for Relation Classification and Extraction</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#概论"><span class="toc-number">2.</span> <span class="toc-text">概论</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#摘要"><span class="toc-number">3.</span> <span class="toc-text">摘要</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#模型结构"><span class="toc-number">4.</span> <span class="toc-text">模型结构</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#数据预处理"><span class="toc-number">5.</span> <span class="toc-text">数据预处理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#数据清洗"><span class="toc-number">6.</span> <span class="toc-text">数据清洗</span></a></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
