@@ -380,6 +380,40 @@ Subtask1.1 实体对关系分类（给定实体对，句子，关系，不包含
     
     
         <article class="index-post">
+            <a class="abstract-title" href = "/2018/04/20/leetcode练习1/" >
+                
+                    <span>leetcode—数组</span>
+            </a>
+            <div class="abstract-content">
+                数组从排序数组中删除重复项原题链接链接给定一个排序数组，你需要在原地删除重复出现的元素，使得每个元素只出现一次，返回移除后数组的新长度。
+不要使用额外的数组空间，你必须在原地修改输入数组并在使用 O(1) 额外空间的条件下完成。
+如：
+
+给定数组 nums = [1,1,2], 函数应该返回新的长度 2, 并且原数组 nums 的前两个元素被修改为 1, 2。
+
+刚开始我很傻的想直接用set集合来做的，先转换为set集合，再转换为列表，hh毫无疑问 NOT AC！
+正确的思路：
+弄两个指针，开始指向第一个和第二个，发现相同的则重复的需要去掉，无非就是遍历数组，发现重复，就把后面的往前移，...
+            </div>
+            <div class="abstract-post-meta">
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/20</span>
+                </div>
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = 算法>算法</a>
+    
+</div>
+                
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
             <a class="abstract-title" href = "/2018/04/20/parser命令解析/" >
                 
                     <span>argparse模块</span>
@@ -406,6 +440,33 @@ Subtask1.1 实体对关系分类（给定实体对，句子，关系，不包含
                 <div class= abstract-tags >
     
         <a class="post-tag" href="javascript:void(0);" data-tags = tensorflow>tensorflow</a>
+    
+</div>
+                
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
+            <a class="abstract-title" href = "/2018/04/20/动态规划算法总结/" >
+                
+                    <span>动态规划算法总结</span>
+            </a>
+            <div class="abstract-content">
+                什么是动态规划？1.概念：
+动态规划算法通常用于求解具有某种最优性质的问题。在这类问题中，可能会有许多可行解。每一个解都对应于一个值，我们希望找到具有最优值的解。动态规划算法与分治法类似，其基本思想也是将待求解问题分解成若干个子问题，先求解子问题，然后从这些子问题的解得到原问题的解。与分治法不同的是，适合于用动态规划求解的问题，经分解得到子问题往往不是互相独立的。若用分治法来解这类问题，则分解得到的子问题数目太多，有些子问题被重复计算了很多次。如果我们能够保存已解决的子问题的答案，而在需要时再找出已求得的答案，这样就可以避免大量的重复计算，节省时间。我们可以用一个表来记录所有已解的子问题...
+            </div>
+            <div class="abstract-post-meta">
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/20</span>
+                </div>
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = 算法>算法</a>
     
 </div>
                 
@@ -508,69 +569,7 @@ Subtask1.1 实体对关系分类（给定实体对，句子，关系，不包含
     
     
         <article class="index-post">
-            <a class="abstract-title" href = "/2018/04/15/leetcode练习1/" >
-                
-                    <span>leetcode—数组</span>
-            </a>
-            <div class="abstract-content">
-                数组从排序数组中删除重复项原题链接链接给定一个排序数组，你需要在原地删除重复出现的元素，使得每个元素只出现一次，返回移除后数组的新长度。
-不要使用额外的数组空间，你必须在原地修改输入数组并在使用 O(1) 额外空间的条件下完成。
-如：
-
-给定数组 nums = [1,1,2], 函数应该返回新的长度 2, 并且原数组 nums 的前两个元素被修改为 1, 2。
-
-刚开始我很傻的想直接用set集合来做的，先转换为set集合，再转换为列表，hh毫无疑问 NOT AC！
-正确的思路：
-重复的需要去掉，无非就是遍历数组，发现重复，就把后面的往前移，把重复值覆盖掉。具体说，可以维护2个指针，慢指针...
-            </div>
-            <div class="abstract-post-meta">
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/15</span>
-                </div>
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = 算法>算法</a>
-    
-</div>
-                
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="abstract-title" href = "/2018/04/15/tensorflow基础/" >
-                
-                    <span>tensorflow中的一些函数</span>
-            </a>
-            <div class="abstract-content">
-                1.tf.argmaxtf.argmax(input, axis=None, name=None, dimension=None)此函数是对矩阵按行或列计算最大值
-参数input：输入Tensoraxis：0表示按列，1表示按行name：名称dimension：和axis功能一样，默认axis取值优先。新加的字段返回：Tensor 一般是行或列的最大值下标
-123456789101112131415import tensorflow as tf  a=tf.Variable(tf.random_uniform([3,4],minval=-1,maxval=1))  b=tf.argmax...
-            </div>
-            <div class="abstract-post-meta">
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/15</span>
-                </div>
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = tensorflow>tensorflow</a>
-    
-</div>
-                
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="abstract-title" href = "/2018/04/15/img/4.16-4.22周计划/" >
+            <a class="abstract-title" href = "/2018/04/15/4.16-4.22周计划/" >
                 
                     <span>416-422周计划</span>
             </a>
@@ -609,13 +608,14 @@ Subtask1.1 实体对关系分类（给定实体对，句子，关系，不包含
     
     
         <article class="index-post">
-            <a class="abstract-title" href = "/2018/04/15/动态规划算法总结/" >
+            <a class="abstract-title" href = "/2018/04/15/tensorflow基础/" >
                 
-                    <span>动态规划算法总结</span>
+                    <span>tensorflow中的一些函数</span>
             </a>
             <div class="abstract-content">
-                什么是动态规划？1.概念：
-动态规划算法通常用于求解具有某种最优性质的问题。在这类问题中，可能会有许多可行解。每一个解都对应于一个值，我们希望找到具有最优值的解。动态规划算法与分治法类似，其基本思想也是将待求解问题分解成若干个子问题，先求解子问题，然后从这些子问题的解得到原问题的解。与分治法不同的是，适合于用动态规划求解的问题，经分解得到子问题往往不是互相独立的。若用分治法来解这类问题，则分解得到的子问题数目太多，有些子问题被重复计算了很多次。如果我们能够保存已解决的子问题的答案，而在需要时再找出已求得的答案，这样就可以避免大量的重复计算，节省时间。我们可以用一个表来记录所有已解的子问题...
+                1.tf.argmaxtf.argmax(input, axis=None, name=None, dimension=None)此函数是对矩阵按行或列计算最大值
+参数input：输入Tensoraxis：0表示按列，1表示按行name：名称dimension：和axis功能一样，默认axis取值优先。新加的字段返回：Tensor 一般是行或列的最大值下标
+123456789101112131415import tensorflow as tf  a=tf.Variable(tf.random_uniform([3,4],minval=-1,maxval=1))  b=tf.argmax...
             </div>
             <div class="abstract-post-meta">
                 <!-- date  -->
@@ -626,7 +626,7 @@ Subtask1.1 实体对关系分类（给定实体对，句子，关系，不包含
                 
                 <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = 算法>算法</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = tensorflow>tensorflow</a>
     
 </div>
                 
@@ -1052,7 +1052,17 @@ Subtask1.1 实体对关系分类（给定实体对，句子，关系，不包含
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">04/20</span><a class="archive-post-title" href= "/2018/04/20/动态规划算法总结/" >动态规划算法总结</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">04/20</span><a class="archive-post-title" href= "/2018/04/20/parser命令解析/" >argparse模块</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/20</span><a class="archive-post-title" href= "/2018/04/20/leetcode练习1/" >leetcode—数组</a>
         </li>
     
     
@@ -1076,8 +1086,17 @@ Subtask1.1 实体对关系分类（给定实体对，句子，关系，不包含
         </li>
     
     
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
         <li class="archive-post-item">
-            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/tensorflow基础/" >tensorflow中的一些函数</a>
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2018/01/22/Markdown常用语法/" >Markdown 常用语法(个人总结）</a>
         </li>
     
     
@@ -1092,20 +1111,6 @@ Subtask1.1 实体对关系分类（给定实体对，句子，关系，不包含
     
         <li class="archive-post-item">
             <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2018/01/21/hello-world/" >Hello World</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> 2018 </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/4.16-4.22周计划/" >416-422周计划</a>
         </li>
     
     
@@ -1133,35 +1138,12 @@ Subtask1.1 实体对关系分类（给定实体对，句子，关系，不包含
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/动态规划算法总结/" >动态规划算法总结</a>
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/4.16-4.22周计划/" >416-422周计划</a>
         </li>
     
     
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> Invalid date </div>
-    <ul class="year-list">
-    
-    
         <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2018/01/22/Markdown常用语法/" >Markdown 常用语法(个人总结）</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> 2018 </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/leetcode练习1/" >leetcode—数组</a>
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/tensorflow基础/" >tensorflow中的一些函数</a>
         </li>
     
     
@@ -1184,15 +1166,15 @@ Subtask1.1 实体对关系分类（给定实体对，句子，关系，不包含
         <div class="sidebar-panel-tags">
     <div class="sidebar-tags-name">
     
+        <span class="sidebar-tag-name" data-tags="日常"><span class="iconfont-archer">&#xe606;</span>日常</span>
+    
+        <span class="sidebar-tag-name" data-tags="计划"><span class="iconfont-archer">&#xe606;</span>计划</span>
+    
         <span class="sidebar-tag-name" data-tags="学习笔记"><span class="iconfont-archer">&#xe606;</span>学习笔记</span>
     
         <span class="sidebar-tag-name" data-tags="语义关系分类"><span class="iconfont-archer">&#xe606;</span>语义关系分类</span>
     
         <span class="sidebar-tag-name" data-tags="文本分类"><span class="iconfont-archer">&#xe606;</span>文本分类</span>
-    
-        <span class="sidebar-tag-name" data-tags="日常"><span class="iconfont-archer">&#xe606;</span>日常</span>
-    
-        <span class="sidebar-tag-name" data-tags="计划"><span class="iconfont-archer">&#xe606;</span>计划</span>
     
         <span class="sidebar-tag-name" data-tags="算法"><span class="iconfont-archer">&#xe606;</span>算法</span>
     
