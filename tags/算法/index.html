@@ -299,13 +299,20 @@
     
     
         <article class="index-post">
-            <a class="abstract-title" href = "/2018/04/20/动态规划算法总结/" >
+            <a class="abstract-title" href = "/2018/04/20/leetcode练习1/" >
                 
-                    <span>动态规划算法总结</span>
+                    <span>leetcode—数组</span>
             </a>
             <div class="abstract-content">
-                什么是动态规划？1.概念：
-动态规划算法通常用于求解具有某种最优性质的问题。在这类问题中，可能会有许多可行解。每一个解都对应于一个值，我们希望找到具有最优值的解。动态规划算法与分治法类似，其基本思想也是将待求解问题分解成若干个子问题，先求解子问题，然后从这些子问题的解得到原问题的解。与分治法不同的是，适合于用动态规划求解的问题，经分解得到子问题往往不是互相独立的。若用分治法来解这类问题，则分解得到的子问题数目太多，有些子问题被重复计算了很多次。如果我们能够保存已解决的子问题的答案，而在需要时再找出已求得的答案，这样就可以避免大量的重复计算，节省时间。我们可以用一个表来记录所有已解的子问题...
+                数组从排序数组中删除重复项原题链接链接给定一个排序数组，你需要在原地删除重复出现的元素，使得每个元素只出现一次，返回移除后数组的新长度。
+不要使用额外的数组空间，你必须在原地修改输入数组并在使用 O(1) 额外空间的条件下完成。
+如：
+
+给定数组 nums = [1,1,2], 函数应该返回新的长度 2, 并且原数组 nums 的前两个元素被修改为 1, 2。
+
+刚开始我很傻的想直接用set集合来做的，先转换为set集合，再转换为列表，hh毫无疑问 NOT AC！
+正确的思路：
+弄两个指针，开始指向第一个和第二个，发现相同的则重复的需要去掉，无非就是遍历数组，发现重复，就把后面的往前移，...
             </div>
             <div class="abstract-post-meta">
                 <!-- date  -->
@@ -326,20 +333,13 @@
     
     
         <article class="index-post">
-            <a class="abstract-title" href = "/2018/04/20/leetcode练习1/" >
+            <a class="abstract-title" href = "/2018/04/20/动态规划算法总结/" >
                 
-                    <span>leetcode—数组</span>
+                    <span>动态规划算法总结</span>
             </a>
             <div class="abstract-content">
-                数组从排序数组中删除重复项原题链接链接给定一个排序数组，你需要在原地删除重复出现的元素，使得每个元素只出现一次，返回移除后数组的新长度。
-不要使用额外的数组空间，你必须在原地修改输入数组并在使用 O(1) 额外空间的条件下完成。
-如：
-
-给定数组 nums = [1,1,2], 函数应该返回新的长度 2, 并且原数组 nums 的前两个元素被修改为 1, 2。
-
-刚开始我很傻的想直接用set集合来做的，先转换为set集合，再转换为列表，hh毫无疑问 NOT AC！
-正确的思路：
-弄两个指针，开始指向第一个和第二个，发现相同的则重复的需要去掉，无非就是遍历数组，发现重复，就把后面的往前移，...
+                什么是动态规划？1.概念：
+动态规划算法通常用于求解具有某种最优性质的问题。在这类问题中，可能会有许多可行解。每一个解都对应于一个值，我们希望找到具有最优值的解。动态规划算法与分治法类似，其基本思想也是将待求解问题分解成若干个子问题，先求解子问题，然后从这些子问题的解得到原问题的解。与分治法不同的是，适合于用动态规划求解的问题，经分解得到子问题往往不是互相独立的。若用分治法来解这类问题，则分解得到的子问题数目太多，有些子问题被重复计算了很多次。如果我们能够保存已解决的子问题的答案，而在需要时再找出已求得的答案，这样就可以避免大量的重复计算，节省时间。我们可以用一个表来记录所有已解的子问题...
             </div>
             <div class="abstract-post-meta">
                 <!-- date  -->
@@ -640,18 +640,6 @@
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     <div class="total-archive"> Total : 16 </div>
     
     <div class="post-archive">
@@ -679,12 +667,17 @@
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">04/20</span><a class="archive-post-title" href= "/2018/04/20/parser命令解析/" >tensorflow - argparse模块</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">04/20</span><a class="archive-post-title" href= "/2018/04/20/动态规划算法总结/" >动态规划算法总结</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/论文学习笔记 -RL for Text classification/" >论文学习笔记-Learning Structured Representation for Text Classification via Reinforcement Learning</a>
+            <span class="archive-post-date">02/26</span><a class="archive-post-title" href= "/2018/02/26/序列模型/" >吴恩达 第五部分 序列模型</a>
         </li>
     
     
@@ -721,6 +714,20 @@
     
         </ul>
     
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2018/01/21/hello-world/" >Hello World</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
     <div class="archive-year"> 2018 </div>
     <ul class="year-list">
     
@@ -730,36 +737,13 @@
         </li>
     
     
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> Invalid date </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2018/01/22/Markdown常用语法/" >Markdown 常用语法(个人总结）</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> 2018 </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">04/20</span><a class="archive-post-title" href= "/2018/04/20/parser命令解析/" >tensorflow - argparse模块</a>
-        </li>
-    
-    
         <li class="archive-post-item">
             <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/Q-learning/" >论文学习笔记-Dual-tensor</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/论文学习笔记 -RL for Text classification/" >论文学习笔记-Learning Structured Representation for Text Classification via Reinforcement Learning</a>
         </li>
     
     
@@ -770,11 +754,6 @@
     
         <li class="archive-post-item">
             <span class="archive-post-date">03/13</span><a class="archive-post-title" href= "/2018/03/13/313-319周计划/" >313-319周计划</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">02/26</span><a class="archive-post-title" href= "/2018/02/26/序列模型/" >吴恩达 第五部分 序列模型</a>
         </li>
     
     
@@ -793,7 +772,7 @@
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2018/01/21/hello-world/" >Hello World</a>
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2018/01/22/Markdown常用语法/" >Markdown 常用语法(个人总结）</a>
         </li>
     
     </div>
