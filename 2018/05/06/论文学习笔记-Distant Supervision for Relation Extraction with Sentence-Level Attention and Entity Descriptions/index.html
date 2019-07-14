@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html>
+    <!-- title -->
+
+
+
+
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
+    <title>论文学习笔记-Distant Supervision for Relation Extraction with Sentence-level Attention and Entity Descriptions · Lmy&#39;s Blog</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+        box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.7);
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s 1;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href= /css/style.css?v=20180311 as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" type="text/css" href= /css/mobile.css?v=20180311 media="(max-width: 980px)"/>
+    <link rel="icon" href= /assets/favicon.ico>
+    <script>
+  // load webfont-loader async, and add callback function
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+  
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntroTags = document.getElementsByClassName('post-intro-tags')[0],
+        postIntroMeat = document.getElementsByClassName('post-intro-meta')[0];
+      if (postIntroTags) {
+        postIntroTags.classList.add('post-fade-in');
+      }
+      if (postIntroMeat) {
+        postIntroMeat.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  async("https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", asyncCb)
+</script>
+    <script>
+        (function (w) {
+            "use strict";
+            // rel=preload support test
+            if (!w.loadCSS) {
+                w.loadCSS = function () { };
+            }
+            // define on the loadCSS obj
+            var rp = loadCSS.relpreload = {};
+            // rel=preload feature support test
+            // runs once and returns a function for compat purposes
+            rp.support = (function () {
+                var ret;
+                try {
+                    ret = w.document.createElement("link").relList.supports("preload");
+                } catch (e) {
+                    ret = false;
+                }
+                return function () {
+                    return ret;
+                };
+            })();
+
+            // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+            // then change that media back to its intended value on load
+            rp.bindMediaToggle = function (link) {
+                // remember existing media attr for ultimate state, or default to 'all'
+                var finalMedia = link.media || "all";
+
+                function enableStylesheet() {
+                    link.media = finalMedia;
+                }
+
+                // bind load handlers to enable media
+                if (link.addEventListener) {
+                    link.addEventListener("load", enableStylesheet);
+                } else if (link.attachEvent) {
+                    link.attachEvent("onload", enableStylesheet);
+                }
+
+                // Set rel and non-applicable media type to start an async request
+                // note: timeout allows this to happen async to let rendering continue in IE
+                setTimeout(function () {
+                    link.rel = "stylesheet";
+                    link.media = "only x";
+                });
+                // also enable media after 3 seconds,
+                // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+                setTimeout(enableStylesheet, 3000);
+            };
+
+            // loop through link elements in DOM
+            rp.poly = function () {
+                // double check this to prevent external calls from running
+                if (rp.support()) {
+                    return;
+                }
+                var links = w.document.getElementsByTagName("link");
+                for (var i = 0; i < links.length; i++) {
+                    var link = links[i];
+                    // qualify links to those with rel=preload and as=style attrs
+                    if (link.rel === "preload" && link.getAttribute("as") === "style" && !link.getAttribute("data-loadcss")) {
+                        // prevent rerunning on link
+                        link.setAttribute("data-loadcss", true);
+                        // bind listeners to toggle media back
+                        rp.bindMediaToggle(link);
+                    }
+                }
+            };
+
+            // if unsupported, run the polyfill
+            if (!rp.support()) {
+                // run once at least
+                rp.poly();
+
+                // rerun poly on an interval until onload
+                var run = w.setInterval(rp.poly, 500);
+                if (w.addEventListener) {
+                    w.addEventListener("load", function () {
+                        rp.poly();
+                        w.clearInterval(run);
+                    });
+                } else if (w.attachEvent) {
+                    w.attachEvent("onload", function () {
+                        rp.poly();
+                        w.clearInterval(run);
+                    });
+                }
+            }
+            // commonjs
+            if (typeof exports !== "undefined") {
+                exports.loadCSS = loadCSS;
+            }
+            else {
+                w.loadCSS = loadCSS;
+            }
+        }(typeof global !== "undefined" ? global : this));
+    </script>
+    <script src="//cdn.staticfile.org/jquery/3.2.1/jquery.min.js" defer></script>
+    <script src="/scripts/main.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >Lmy&#39;s Blog.</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">论文学习笔记-Distant Supervision for Relation Extraction with Sentence-level Attention and Entity Descriptions</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>Lmy's Blog.</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style=
+
+
+
+
+
+
+
+
+height:50vh;
+
+>
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            论文学习笔记-Distant Supervision for Relation Extraction with Sentence-level Attent...
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+                学习笔记
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <!-- 文章页标签  -->
+            
+                <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = 学习笔记>学习笔记</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = lstm rnn>lstm rnn</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = 关系抽取>关系抽取</a>
+    
+</div>
+            
+            <div class="post-intro-meta">
+                <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                <span class="post-intro-time">2018/05/06</span>
+                
+                <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                    <span class="iconfont-archer">&#xe602;</span>
+                    <span id="busuanzi_value_page_pv"></span>
+                </span>
+                
+                <span class="shareWrapper">
+                    <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                    <span class="shareText">Share</span>
+                    <ul class="shareList">
+                        <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                            <div class="share-qrcode"></div>
+                        </li>
+                        <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                        <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                        <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                        <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                    </ul>
+                </span>
+            </div>
+        
+    </div>
+</div>
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <p><a href="https://zhuanlan.zhihu.com/p/35051652" target="_blank" rel="noopener">原文链接</a></p>
+<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>标注数据的规模一直是限制关系抽取任务发展的主要问题。因为人工标注成本过高，因此为自然界中所有的问题都提供充足的标注数据是不可能完成的任务。在这种背景下，研究人员采用弱监督的方法自动生成训练数据集，有效缓解训练数据不足的问题：将知识库中的三元组(e1, r, e2)，与非结构化文本数据对齐，从而构造大量训练数据。但是此条件下生成的训练集中存在一定的噪声数据，所以当前针对弱监督关系抽取任务的主要研究方向是如何自动有效的战胜或移除噪声数据。</p>
+<p>本文主要贡献：</p>
+<p>本文针对之前的工作在选取有效实例（句子）和实体描述方面存在的缺陷，提出了鲁棒的降噪方法。</p>
+<p>（1）提出了一种句子级注意力模型APCNNs来选取有效实例，充分利用知识库中的监督信息。</p>
+<p>（2）从Freebase和Wikipedia抽取实体描述来增补背景知识，这些背景知识可以为关系预测提供更多信息，还可以在注意力模型中帮助进行更好的实体表征。经过实验验证，本文提出的方法的关系抽取效果相对baseline有明显提升。</p>
+<p>关系抽取的方法大概可分为两类：监督和弱监督。</p>
+<p>监督方法：将任务视作多分类问题，可以达到较高precision和recall，但是需要人工标注数据，难以应用大规模语料库。</p>
+<p>弱监督方法：将自由文本与知识库中的大量结构化数据信息（弱监督信息）对齐，避免人工标注，用以训练关系抽取系统，当时弱监督数据存在一定数量的噪声数据。</p>
+<p>自动标注训练数据：<br>对于KB中的三元组(e1, r, e2)，所有包含实体e1和e2的句子都被视作关系r的训练数据。下图为三元组/location/location/contains(Nevada, Las Vegas)的训练实例&amp;实体描述背景知识。</p>
+<p>关系r：/location/location/contains</p>
+<p>实体(e1,e2): (Nevada, Las Vegas)</p>
+<p>训练实例：S1-S4</p>
+<p>实体描述：【Navada】【Las Vegas】</p>
+<p><img src="https://i.loli.net/2018/05/14/5af9677493fda.jpg" alt=""></p>
+<ul>
+<li>误标签问题及当前解决方案<br>对于三元组(e1, r, e2)，认为所有包含e1和e2的句子组成一个bag，关系r为此bag的标签。但是有时并不是bag中的所有句子都表达关系r（e.g.，Figure 1中S2&amp;S4）。目前针对此问题的基于深度学习的解决方案：</li>
+</ul>
+<p>a) At-least-one假设（Zeng et al., 2015):  </p>
+<p>认为提及两个目标实体的句子中至少有一个句子能表达目标关系，这种方法可能会遗漏一些重要信息。</p>
+<p>b)  句子级别Attention (Lin et al., 2016)：</p>
+<p>为bag中的所有句子计算相应权重，体现句子对于目标关系的贡献值，这种方法有效的所有句子的信息。</p>
+<ul>
+<li>本文的思路<br>本文采用Attention的方法，充分的利用了数据集中的信息。并且本文加入实体描述信息来帮助计算Attention Weights，以此加入有用的背景知识信息。(e.g. 没有实体描述的话，S1表达的关系将有歧义)</li>
+</ul>
+<p>本文提出的模型主要可以分为两部分，第一部分用于生成句子向量，第二部分用于计算Attention<br>Weights，并加权就和得到当前bag的向量表示。<br>PCNNs:  用于计算bag中实例（句子）的特征向量。<br><img src="https://i.loli.net/2018/05/14/5af96b0e3a749.jpg" alt=""></p>
+<p>PCNNs:  用于计算bag中实例（句子）的特征向量。<br>a)   Vector Representation</p>
+<p>网络输入：将位置向量与词向量通过连接操作组成一个合成向量，向量大小</p>
+<p>k= kw + 2kd (kw, kd分别为词向量和位置向量的size)</p>
+<p>1) Word Embeddings: 采用Mikolov<br>et al. 2013a 方法训练出的词向量初始化句子中的词语，预训练的词向量矩阵用E表示。</p>
+<p>2) Position Embeddings: 当前词与e1，e2的相对距离，随机初始化表示相对距离的向量，并与模型共同训练。<br>b) Convolution and Piecewise Max-pooling</p>
+<p>PCNN先对输入的句子做一系列局部窗口的卷积操作，然后将得到的特征向量根据实体对(e1,<br>e2)的位置将实例分为三段，分别进行最大池化。串联所有池化层结果</p>
+<p>得到</p>
+<p>上图（a）中灰色圆点代表实体位置，以n=3为例。句子S的特征向量：</p>
+<p>Sentence-level Attention Model: 结合实体描述给有效句子赋更高权值<br>a) 实例描述Entity Descriptions</p>
+<p>在关系抽取中，实体对之间的关系与实体本身所携带的信息具有很大的关系。本文利用了这个特点，将实体信息融入到Attention<br>Weights的计算当中。如何得到准确的实体描述是一个非常关键的问题。如果只利用词向量作为实体信息的描述会存在局限性：</p>
+<p>（1）词向量很难学出专有名词，类似人名，地名的准确向量表示；</p>
+<p>（2）人名经常作为实体出现，词向量无法给具有相同姓名的不同人物不同的向量表示；</p>
+<p>（3）对于预训练词向量矩阵中没有出现过的实体，只能随机初始化，该向量无法携带任何有用信息。针对以上问题，本文利用Freebase和Wikipedia提供的实体的描述信息，生成特定语境下的实体的准确的向量表示。</p>
+<p>用</p>
+<p>表示（entity, description）对。description为作者收集到的实体的描述语句， d_{i} 则通过传统CNN计算得到得到，该CNN权重矩阵为</p>
+<p>是独立于前面提到的网络的新构建的实体信息描述生成网络。作者希望实体的向量 e<em>{i} 和 d</em>{i}</p>
+<p>其描述相近，定义二者间误差：</p>
+<p>所以本文希望在end-to-end的训练过程中得到更好的 e_{i} 。本文应用的实体描述来自Freebase的数据量为25271，Wikipedia数据量为14257，其中舍弃来自Wiki的包含“may<br>refer to”的模糊描述（8%）。对每个描述抽取前80个词进行应用。</p>
+<p>b) Attention Layer</p>
+<p>用e1和e2的向量差 v<em>{relation}=e</em>{1}-e<em>{2} 来表示实例中实体间的关系r，如果一个实例能表达这种关系，那么其向量表达应该和 v</em>{relation} 高度相似，由此计算权重：</p>
+<p>其中 \left[ b<em>{i};v</em>{relation} \right] 为二者垂直级联。为不同实例赋权，计算整体bag feature:</p>
+<p>c) Softmax</p>
+<p>为了计算每种关系的置信度，应用Softmax。</p>
+<p>其中</p>
+<p>为权重矩阵。</p>
+<p>第i个关系的条件概率：</p>
+<p>其中B表示一个bag。</p>
+<ol>
+<li>实验</li>
+</ol>
+<p>训练</p>
+<p>三种配置：</p>
+<p>a) APCNNs 只包含Attention Model，不包含实体描述。</p>
+<p>b) APCNNs+D</p>
+<p>c) PCNNs+MIL+D, 只选取一个实例。</p>
+<p>结果</p>
+<p> 数据集：Freebase和New York Tims(NYT)：52 relations 和 9528 entities<br>评估：<br>a) held-out evaluation：自动比较抽取关系实例和freebase中的关系数据。在Figure 4 中，recall很低的时候曲线有大幅下降，这是因为held-out evaluation会受freebase中false<br>negative问题的影响，人工评价可以消除这种问题。</p>
+<p>b) 人工评价：选取在语料库中标记为“NA”，但是模型结果不是“NA”的bag，计算准确度。</p>
+<p>c) Weight α分析:</p>
+<p>可以看出，其中第四个实例是无效实例，相对于之前的工作APCNNs，本文提出的APCNNs+D通过加入实例描述后，为该实例赋予更低的权重，强化了attention模型的效果。</p>
+
+    </article>
+    <!-- 前后页  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href= "/2018/05/12/论文学习笔记-Relation Classification via Convolutional Deep Neural Network/" title= Relation Classification via Convolutional Deep Neural Network >
+                    <div class="nextTitle">Relation Classification via Convolutional Deep Neural Network</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2018/04/24/tensorboard/" title=  >
+                    <div class="prevTitle">[Untitled Post]</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+    <div id="lv-container" data-id="city" data-uid= [object Object]>
+        <script type="text/javascript">
+            (function (d, s) {
+                var j, e = d.getElementsByTagName(s)[0];
+                if (typeof LivereTower === 'function') { return; }
+                j = d.createElement(s);
+                j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                j.async = true;
+
+                e.parentNode.insertBefore(j, e);
+            })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!--PC版-->
+
+    <!--PC版-->
+
+
+    
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:291981835@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/lulumengyi" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+            
+                <span class="iconfont-archer wechat" title=wechat>
+                  
+                  <img class="profile-qr" src="/assets/example_qr.png" />
+                </span>
+            
+        
+    
+        
+    
+        
+            
+                <a href="https://weibo.com/u/2828430520/home?wvr=5" class="iconfont-archer weibo" target="_blank" title=weibo></a>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+        <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span>
+        </span>
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#概述"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li></ol>
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 23 </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/14</span><a class="archive-post-title" href= "/2019/07/14/论文学习笔记Vocabulary Pyramid Network Multi-Pass Encoding and Decoding with Multi-Level Vocabularies for Response Generation  /" >[Untitled Post]</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/14</span><a class="archive-post-title" href= "/2019/07/14/论文学习笔记  /" >[Untitled Post]</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/14</span><a class="archive-post-title" href= "/2019/07/14/“AIS 2019”论文研讨会 Distilling Discrimination and Generalization Knowledge for Event Detection via Delta-Representation Lear/" >[Untitled Post]</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/14</span><a class="archive-post-title" href= "/2019/07/14/论文学习笔记Learning with Noise Enhance Distantly Supervised Relation Extraction with Dynamic Transition Matrix (1)/" >[Untitled Post]</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/14</span><a class="archive-post-title" href= "/2019/07/14/论文学习笔记 Learning to Ask Good Questions Ranking Clarification Questions using Neural Expected Value of Perfect Information 170917/" >[Untitled Post]</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2019/04/15/论文学习笔记 Zero-Shot Question Generation from Knowledge Graphs for Unseen Predicates and Entity Types/" >论文学习笔记 Zero-Shot Question Generation from Knowledge Graphs for Unseen Predicates and Entity Types</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2018 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/12</span><a class="archive-post-title" href= "/2018/05/12/论文学习笔记-Relation Classification via Convolutional Deep Neural Network/" >Relation Classification via Convolutional Deep Neural Network</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/06</span><a class="archive-post-title" href= "/2018/05/06/论文学习笔记-Distant Supervision for Relation Extraction with Sentence-Level Attention and Entity Descriptions/" >论文学习笔记-Distant Supervision for Relation Extraction with Sentence-level Attention and Entity Descriptions</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/22</span><a class="archive-post-title" href= "/2018/04/22/集成学习/" >集成学习-学习笔记</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/22</span><a class="archive-post-title" href= "/2018/04/22/论文学习笔记 ask ：Effectively Combining Recurrent and Convolutional Neural Networks for Relation Classification and Extraction/" >论文学习笔记-Effectively Combining Recurrent and Convolutional Neural Networks for Relation Classification and Extraction</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/21</span><a class="archive-post-title" href= "/2018/04/21/tensorflow基础/" >tensorflow中的一些函数</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/20</span><a class="archive-post-title" href= "/2018/04/20/parser命令解析/" >tensorflow - argparse模块</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/20</span><a class="archive-post-title" href= "/2018/04/20/动态规划算法总结/" >动态规划算法总结</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/20</span><a class="archive-post-title" href= "/2018/04/20/leetcode练习1/" >leetcode—数组</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/Q-learning/" >论文学习笔记-Dual-tensor</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/4.16-4.22周计划/" >416-422周计划</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/13</span><a class="archive-post-title" href= "/2018/03/13/313-319周计划/" >313-319周计划</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/26</span><a class="archive-post-title" href= "/2018/02/26/序列模型/" >吴恩达 第五部分 序列模型</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2018/04/24/tensorboard/" >[Untitled Post]</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2018 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/21</span><a class="archive-post-title" href= "/2018/01/21/Lmy的第一篇博客/" >Lmy的一篇博客</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2018/01/22/Markdown常用语法/" >Markdown 常用语法(个人总结）</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2018/01/21/hello-world/" >Hello World</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2018/03/14/强化学习概述/" >强化学习概述</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="日常"><span class="iconfont-archer">&#xe606;</span>日常</span>
+    
+        <span class="sidebar-tag-name" data-tags="计划"><span class="iconfont-archer">&#xe606;</span>计划</span>
+    
+        <span class="sidebar-tag-name" data-tags="学习笔记"><span class="iconfont-archer">&#xe606;</span>学习笔记</span>
+    
+        <span class="sidebar-tag-name" data-tags="语义关系分类"><span class="iconfont-archer">&#xe606;</span>语义关系分类</span>
+    
+        <span class="sidebar-tag-name" data-tags="文本分类"><span class="iconfont-archer">&#xe606;</span>文本分类</span>
+    
+        <span class="sidebar-tag-name" data-tags="tensorflow"><span class="iconfont-archer">&#xe606;</span>tensorflow</span>
+    
+        <span class="sidebar-tag-name" data-tags="算法"><span class="iconfont-archer">&#xe606;</span>算法</span>
+    
+        <span class="sidebar-tag-name" data-tags="论文笔记"><span class="iconfont-archer">&#xe606;</span>论文笔记</span>
+    
+        <span class="sidebar-tag-name" data-tags="问题生成"><span class="iconfont-archer">&#xe606;</span>问题生成</span>
+    
+        <span class="sidebar-tag-name" data-tags="CNN"><span class="iconfont-archer">&#xe606;</span>CNN</span>
+    
+        <span class="sidebar-tag-name" data-tags="RNN"><span class="iconfont-archer">&#xe606;</span>RNN</span>
+    
+        <span class="sidebar-tag-name" data-tags="关系分类"><span class="iconfont-archer">&#xe606;</span>关系分类</span>
+    
+        <span class="sidebar-tag-name" data-tags="lstm rnn"><span class="iconfont-archer">&#xe606;</span>lstm rnn</span>
+    
+        <span class="sidebar-tag-name" data-tags="关系抽取"><span class="iconfont-archer">&#xe606;</span>关系抽取</span>
+    
+        <span class="sidebar-tag-name" data-tags="RL"><span class="iconfont-archer">&#xe606;</span>RL</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: '/',
+        author: 'lmy'
+    }
+</script>
+    <!-- busuanzi  -->
+    
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+    
+    </body>
+</html>
+
+

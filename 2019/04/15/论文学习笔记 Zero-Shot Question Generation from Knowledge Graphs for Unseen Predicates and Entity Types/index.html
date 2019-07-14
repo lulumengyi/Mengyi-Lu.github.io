@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html>
+    <!-- title -->
+
+
+
+
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
+    <title>论文学习笔记 Zero-Shot Question Generation from Knowledge Graphs for Unseen Predicates and Entity Types · Lmy&#39;s Blog</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+        box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.7);
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s 1;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href= /css/style.css?v=20180311 as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" type="text/css" href= /css/mobile.css?v=20180311 media="(max-width: 980px)"/>
+    <link rel="icon" href= /assets/favicon.ico>
+    <script>
+  // load webfont-loader async, and add callback function
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+  
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntroTags = document.getElementsByClassName('post-intro-tags')[0],
+        postIntroMeat = document.getElementsByClassName('post-intro-meta')[0];
+      if (postIntroTags) {
+        postIntroTags.classList.add('post-fade-in');
+      }
+      if (postIntroMeat) {
+        postIntroMeat.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  async("https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", asyncCb)
+</script>
+    <script>
+        (function (w) {
+            "use strict";
+            // rel=preload support test
+            if (!w.loadCSS) {
+                w.loadCSS = function () { };
+            }
+            // define on the loadCSS obj
+            var rp = loadCSS.relpreload = {};
+            // rel=preload feature support test
+            // runs once and returns a function for compat purposes
+            rp.support = (function () {
+                var ret;
+                try {
+                    ret = w.document.createElement("link").relList.supports("preload");
+                } catch (e) {
+                    ret = false;
+                }
+                return function () {
+                    return ret;
+                };
+            })();
+
+            // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+            // then change that media back to its intended value on load
+            rp.bindMediaToggle = function (link) {
+                // remember existing media attr for ultimate state, or default to 'all'
+                var finalMedia = link.media || "all";
+
+                function enableStylesheet() {
+                    link.media = finalMedia;
+                }
+
+                // bind load handlers to enable media
+                if (link.addEventListener) {
+                    link.addEventListener("load", enableStylesheet);
+                } else if (link.attachEvent) {
+                    link.attachEvent("onload", enableStylesheet);
+                }
+
+                // Set rel and non-applicable media type to start an async request
+                // note: timeout allows this to happen async to let rendering continue in IE
+                setTimeout(function () {
+                    link.rel = "stylesheet";
+                    link.media = "only x";
+                });
+                // also enable media after 3 seconds,
+                // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+                setTimeout(enableStylesheet, 3000);
+            };
+
+            // loop through link elements in DOM
+            rp.poly = function () {
+                // double check this to prevent external calls from running
+                if (rp.support()) {
+                    return;
+                }
+                var links = w.document.getElementsByTagName("link");
+                for (var i = 0; i < links.length; i++) {
+                    var link = links[i];
+                    // qualify links to those with rel=preload and as=style attrs
+                    if (link.rel === "preload" && link.getAttribute("as") === "style" && !link.getAttribute("data-loadcss")) {
+                        // prevent rerunning on link
+                        link.setAttribute("data-loadcss", true);
+                        // bind listeners to toggle media back
+                        rp.bindMediaToggle(link);
+                    }
+                }
+            };
+
+            // if unsupported, run the polyfill
+            if (!rp.support()) {
+                // run once at least
+                rp.poly();
+
+                // rerun poly on an interval until onload
+                var run = w.setInterval(rp.poly, 500);
+                if (w.addEventListener) {
+                    w.addEventListener("load", function () {
+                        rp.poly();
+                        w.clearInterval(run);
+                    });
+                } else if (w.attachEvent) {
+                    w.attachEvent("onload", function () {
+                        rp.poly();
+                        w.clearInterval(run);
+                    });
+                }
+            }
+            // commonjs
+            if (typeof exports !== "undefined") {
+                exports.loadCSS = loadCSS;
+            }
+            else {
+                w.loadCSS = loadCSS;
+            }
+        }(typeof global !== "undefined" ? global : this));
+    </script>
+    <script src="//cdn.staticfile.org/jquery/3.2.1/jquery.min.js" defer></script>
+    <script src="/scripts/main.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >Lmy&#39;s Blog.</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">论文学习笔记 Zero-Shot Question Generation from Knowledge Graphs for Unseen Predicates and Entity Types</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>Lmy's Blog.</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style=
+
+
+
+
+
+
+
+
+height:50vh;
+
+>
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            论文学习笔记 Zero-Shot Question Generation from Knowledge Graphs for Unseen Predica...
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+                论文笔记
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <!-- 文章页标签  -->
+            
+                <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = 论文笔记>论文笔记</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = 问题生成>问题生成</a>
+    
+</div>
+            
+            <div class="post-intro-meta">
+                <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                <span class="post-intro-time">2019/04/15</span>
+                
+                <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                    <span class="iconfont-archer">&#xe602;</span>
+                    <span id="busuanzi_value_page_pv"></span>
+                </span>
+                
+                <span class="shareWrapper">
+                    <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                    <span class="shareText">Share</span>
+                    <ul class="shareList">
+                        <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                            <div class="share-qrcode"></div>
+                        </li>
+                        <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                        <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                        <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                        <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                    </ul>
+                </span>
+            </div>
+        
+    </div>
+</div>
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <h1 id="Zero-Shot-Question-Generation-from-Knowledge-Graphs-for-Unseen-Predicates-and-Entity-Types"><a href="#Zero-Shot-Question-Generation-from-Knowledge-Graphs-for-Unseen-Predicates-and-Entity-Types" class="headerlink" title="Zero-Shot Question Generation from Knowledge Graphs for Unseen Predicates and Entity Types"></a>Zero-Shot Question Generation from Knowledge Graphs for Unseen Predicates and Entity Types</h1><h1 id="1、题目与摘要"><a href="#1、题目与摘要" class="headerlink" title="1、题目与摘要"></a>1、题目与摘要</h1><h2 id="1-本文针对什么任务？任务简要介绍下。"><a href="#1-本文针对什么任务？任务简要介绍下。" class="headerlink" title="(1)      本文针对什么任务？任务简要介绍下。"></a>(1)      本文针对什么任务？任务简要介绍下。</h2><p>​    针对问题生成任务。任务设定：给定一个句子，里面包含事实三元组，根据这些事实三元组，进行提问题。</p>
+<h2 id="2-本文发现了什么问题？该文大体是怎么解决的？解决得如何？"><a href="#2-本文发现了什么问题？该文大体是怎么解决的？解决得如何？" class="headerlink" title="(2)      本文发现了什么问题？该文大体是怎么解决的？解决得如何？"></a>(2)      本文发现了什么问题？该文大体是怎么解决的？解决得如何？</h2><p>​    本文提出了在在零样本设定下，通过对齐知识库三元组，利用远程监督方法将包含两个实体的句子抽取出来，然后针对该句子和三元组生成问题，利用了encoder-decoder框架，同时加上词性复制机制（pos copy action）来进行生成问题，零样本的设定通过划分数据集，分为 1) unseen predicates, 2) unseen sub-types and 3) unseen obj-types 在三个方面进行了实验，在目前zero-shot QG是the state of art。</p>
+<h2 id="3-解释下题目。题目起得如何？能概括内容并吸引人吗？"><a href="#3-解释下题目。题目起得如何？能概括内容并吸引人吗？" class="headerlink" title="(3)      解释下题目。题目起得如何？能概括内容并吸引人吗？"></a>(3)      解释下题目。题目起得如何？能概括内容并吸引人吗？</h2><p>题目大概把主要内容都概括了，起的还可以。</p>
+<h1 id="2、介绍"><a href="#2、介绍" class="headerlink" title="2、介绍"></a>2、介绍</h1><h2 id="1-这个任务以往是如何解决的？作者沿着哪条路径继续研究的？为什么？"><a href="#1-这个任务以往是如何解决的？作者沿着哪条路径继续研究的？为什么？" class="headerlink" title="(1)      这个任务以往是如何解决的？作者沿着哪条路径继续研究的？为什么？"></a>(1)      这个任务以往是如何解决的？作者沿着哪条路径继续研究的？为什么？</h2><p>​      本文主要是研究基于结构化知识库中的问题生成，以及如何将泛化为对未发现的谓词和实体类型进行生成问题。（Seyler等人，2015）从知识库三元组中生成问题，但实体和谓词的描述依赖于它们在知识库和字典中的现有标签。（Serban等人，2016年）使用编码器-解码器架构，并在SimpleQuestions数据集上注意力机制（Bordes等人，2015年）。（Dong et al.，2017）生成给定问题的段落，（Khapra等人，2017年）给定知识库实体，生成一组问题对。他们将QG问题建模为一个序列到序列的问题，将所有的知识库实体转换为一组关键字。</p>
+<p>​     以前的QG研究都没有涉及到生成有未知谓词和实体类型的问题，但在机器翻译方面有对未见过的词进行生成，本文借鉴了机器翻译的技术和模型，根据（Luong等人，2015）提出了一个模型，该模型生成指向源句中某些单词的位置占位符，并将其复制到目标句。（G_lc_ehre等人，2016；Gu等人，2016）将复制机制引入到生成文本的文本摘要任务中，（Lebret等人，2016）将复制机制进行了扩展，加入了位置信息。对于QG任务，（Serban等人，2016年），使用问题中主题实体的占位符概括为未发现的实体。但是之前的zeroshot的生成研究只局限于未见的实体没有对未见的谓词进行相关研究。</p>
+<h2 id="2-目前摘要存在什么问题？为什么？你觉得可能还存在什么其他问题？为什么？"><a href="#2-目前摘要存在什么问题？为什么？你觉得可能还存在什么其他问题？为什么？" class="headerlink" title="(2)      目前摘要存在什么问题？为什么？你觉得可能还存在什么其他问题？为什么？"></a>(2)      目前摘要存在什么问题？为什么？你觉得可能还存在什么其他问题？为什么？</h2><h2 id="3-该文准备如何解决这个问题？为什么可以这样解决？你觉得该文解决这个问题的方法如何？为什么？你觉得可以如何-或更好的解决这个问题？为什么？"><a href="#3-该文准备如何解决这个问题？为什么可以这样解决？你觉得该文解决这个问题的方法如何？为什么？你觉得可以如何-或更好的解决这个问题？为什么？" class="headerlink" title="(3)      该文准备如何解决这个问题？为什么可以这样解决？你觉得该文解决这个问题的方法如何？为什么？你觉得可以如何/或更好的解决这个问题？为什么？"></a>(3)      该文准备如何解决这个问题？为什么可以这样解决？你觉得该文解决这个问题的方法如何？为什么？你觉得可以如何/或更好的解决这个问题？为什么？</h2><p>​    如果是人类做这一任务时，首先会阅读句子看实体或者三元组谓词在句子哪个位置出现，然后通过对齐阅读内容从词法角度来进行问题生成。本文基于这样的一个直觉，首先通过远程监督抽取同时包含三元组两个实体的句子，同时也输入知识库中的三元组，对文本中的句子进行对齐，查看三元组出现句子的位置，使用encoder-decoder框架，利用机器翻译中的复制机制（copy action）（其中不仅复制该词还复制该词的词性），使用了两个encoder分别对三元组和句子进行编码，同时每个encoder会进行attention，对文本进行加权，一个decoder进行问题生成。对于没有出现过的谓词，模型会选择从原文本复制或者是从词表生成。</p>
+<h2 id="4-列出该文贡献（该文自己觉得的）"><a href="#4-列出该文贡献（该文自己觉得的）" class="headerlink" title="(4)      列出该文贡献（该文自己觉得的）"></a>(4)      列出该文贡献（该文自己觉得的）</h2><ul>
+<li>提出了一种新的基于知识库的问题生成神经模型，并在零样本的设定下进行研究</li>
+<li>对问答的数据集进行扩展，生成了一个基于上下文信息的问题生成数据集。</li>
+</ul>
+<h1 id="3、模型"><a href="#3、模型" class="headerlink" title="3、模型"></a>3、模型</h1><h2 id="1-整体介绍（主要是图）"><a href="#1-整体介绍（主要是图）" class="headerlink" title="(1)      整体介绍（主要是图）"></a>(1)      整体介绍（主要是图）</h2><p>该模型输入包括：主体实体s，谓词p，客体实体o，和与这三元组匹配的上下文信息。目标是生成关于主体s的问题，并且答案为客体o。</p>
+<p>模型使用encode-decoder框架，两个encoder模块：一个前向网络对事实三元组进行编码，一个RNN对上下文信息进行编码。两个attention模块：分别对三元组和上下文信息的self-attention。一个decoder：使用RNN进行问题生成。每一个时间步t，decoder会选择输出词表的词还是通过copy action从上下文信息进行生成。（上下文信息里的都会进行一个转换，如第一个词且是名词的话，就标记为是C1_NOUN）</p>
+<p><img src="C:\Users\Administrator.PC-201705241810\AppData\Roaming\Typora\typora-user-images\1555073718874.png" alt="1555073718874"></p>
+<h2 id="2-模型创新点"><a href="#2-模型创新点" class="headerlink" title="(2)      模型创新点"></a>(2)      模型创新点</h2><pre><code>本文使用的模型是在 (Sutskever et al., 2014; Bahdanau et al 2014) 提出的encoder-decoder框架的基础上进行的，主要创新点在进行复制时不仅复制该词本身，还复制它的词性。
+</code></pre><h2 id="3-（仅对要进一步跟进的paper）详细介绍模型，从输入到输出，输入矩阵维度，公式等"><a href="#3-（仅对要进一步跟进的paper）详细介绍模型，从输入到输出，输入矩阵维度，公式等" class="headerlink" title="(3)      （仅对要进一步跟进的paper）详细介绍模型，从输入到输出，输入矩阵维度，公式等"></a>(3)      （仅对要进一步跟进的paper）详细介绍模型，从输入到输出，输入矩阵维度，公式等</h2><pre><code>### 3.1 Fact Encoder 
+</code></pre><p>将三元组进行one-hot分别表示为：e_s,e_p,e_o，再对进行embedding，之后将三个向量进行拼接得到 fact encoder。维度：<img src="C:\Users\Administrator.PC-201705241810\AppData\Roaming\Typora\typora-user-images\1555075104061.png" alt="1555075104061"><img src="C:\Users\Administrator.PC-201705241810\AppData\Roaming\Typora\typora-user-images\1555075150578.png" alt="1555075150578"><img src="C:\Users\Administrator.PC-201705241810\AppData\Roaming\Typora\typora-user-images\1555075173220.png" alt="1555075173220"></p>
+<p><img src="C:\Users\Administrator.PC-201705241810\AppData\Roaming\Typora\typora-user-images\1555074915142.png" alt="1555074915142"></p>
+<p><img src="C:\Users\Administrator.PC-201705241810\AppData\Roaming\Typora\typora-user-images\1555074897360.png" alt="1555074897360"></p>
+<h3 id="3-2-Textual-Context-Encoder"><a href="#3-2-Textual-Context-Encoder" class="headerlink" title="3.2 Textual Context Encoder"></a>3.2 Textual Context Encoder</h3><p>将给定的上下文信息进行编码，<img src="C:\Users\Administrator.PC-201705241810\AppData\Roaming\Typora\typora-user-images\1555075295359.png" alt="1555075295359"><img src="C:\Users\Administrator.PC-201705241810\AppData\Roaming\Typora\typora-user-images\1555075273788.png" alt="1555075273788">利用GRU对文本信息进行编码，<img src="C:\Users\Administrator.PC-201705241810\AppData\Roaming\Typora\typora-user-images\1555075359885.png" alt="1555075359885">最后进行拼接得到 Textual Context Encoder ，h_c，<img src="C:\Users\Administrator.PC-201705241810\AppData\Roaming\Typora\typora-user-images\1555078195241.png" alt="1555078195241"></p>
+<h2 id="3-3-Attention"><a href="#3-3-Attention" class="headerlink" title="3.3 Attention"></a>3.3 Attention</h2><ul>
+<li>triple attention</li>
+</ul>
+<p><img src="C:\Users\Administrator.PC-201705241810\AppData\Roaming\Typora\typora-user-images\1555078264778.png" alt="1555078264778"></p>
+<ul>
+<li><p>Textual contexts attention</p>
+<p><img src="C:\Users\Administrator.PC-201705241810\AppData\Roaming\Typora\typora-user-images\1555078301733.png" alt="1555078301733"></p>
+</li>
+<li><p>attention计算公式 </p>
+</li>
+</ul>
+<p><img src="C:\Users\Administrator.PC-201705241810\AppData\Roaming\Typora\typora-user-images\1555078332069.png" alt="1555078332069"></p>
+<h1 id="4、实验"><a href="#4、实验" class="headerlink" title="4、实验"></a>4、实验</h1><h2 id="1-数据集及评价标准介绍"><a href="#1-数据集及评价标准介绍" class="headerlink" title="(1)      数据集及评价标准介绍"></a>(1)      数据集及评价标准介绍</h2><pre><code>数据集使用的SimpleQuestion dataset，包含了100问题，本文对其进行了扩展，利用三元组信息通过远程监督进行对齐，筛选出包含三元组的上下文，对不同类型的上下文信息进行处理。第一个包含谓词的上下文，第二包含主体客体的上下文。
+</code></pre><p>下表显示每个实验设置的10个折叠中样本、谓词、子类型和obj类型的平均数。</p>
+<p><img src="C:\Users\Administrator.PC-201705241810\AppData\Roaming\Typora\typora-user-images\1555076451816.png" alt="1555076451816"></p>
+<h3 id="4-1-1-predicate-textual-contexts"><a href="#4-1-1-predicate-textual-contexts" class="headerlink" title="4.1.1 predicate textual contexts"></a>4.1.1 predicate textual contexts</h3><p>首先对齐三元组，挑选出同时包含s和o的句子，然后利用依存句法提取s和o之间的词语，选择出现频率最高的短语形式作为谓词上下文信息。如下图所示：</p>
+<p><img src="C:\Users\Administrator.PC-201705241810\AppData\Roaming\Typora\typora-user-images\1555075886225.png" alt="1555075886225"></p>
+<h3 id="4-1-2-Sub-Type-and-Obj-Type-textual-contexts"><a href="#4-1-2-Sub-Type-and-Obj-Type-textual-contexts" class="headerlink" title="4.1.2 Sub-Type and Obj-Type textual contexts"></a>4.1.2 Sub-Type and Obj-Type textual contexts</h3><p>通过集合知识库FB5M中的实体类型信息，使用实体类型标签作为s和o的上下文信息，如果该词有多种词性，选择在句子中最常出现的词性。</p>
+<h3 id="评价标准"><a href="#评价标准" class="headerlink" title="评价标准"></a>评价标准</h3><ul>
+<li><strong>BLEU</strong> 提出的一种机器翻译自动评价方法,待评价译文和参考译文的“n-单位片段（n-gram） ”进行比较，并计算出匹配片段的个数。匹配片段数越多，则待评价译文质量越好。<strong>只看中准确率</strong>的指标，更加关心候选译文里的多少 n-gram 是对的，而不在乎召回率.</li>
+<li><strong>ROUGE_L</strong> 匹配两个文本单元之间的最长公共序列（LCS，Longest Common Subsequence）,<strong>ROUGE 只计算召回率</strong></li>
+</ul>
+<h2 id="2-Baseline介绍"><a href="#2-Baseline介绍" class="headerlink" title="(2)      Baseline介绍"></a>(2)      Baseline介绍</h2><ul>
+<li><strong>Select</strong>  是根据（Serban et al.，2016）构建的基线，并适用于零样本设置。在给定事实f的测试时间内，该基线从训练集中选取一个事实f c，并输出与之对应的问题。对于评估未公开的预测，f c与f具有相同的应答类型（obj类型），而在评估未公开的子类型或obj类型时，f c和f具有相同的谓词。</li>
+<li><strong>R-transe</strong> 是SELECT的扩展。输入三元组是对主语、谓词和宾语的转换嵌入进行连接。在测试时，r-transe使用余弦相似性从训练集中选取一个最接近输入事实的事实，并输出与之对应的问题。我们提供了这一基线的两个版本：R-transe，它只索引和检索主题标签的一个位置持有者的原始问题，如in（Serban等人，2016）。以及R-transe拷贝，使用我们的拷贝操作机制对问题进行索引和检索。</li>
+<li><strong>IR</strong>  是信息检索的基线模型。信息检索以前被用作文本输入的QG基线（Rush等人，2015年；Du等人，2017年）。依赖每个输入三元组的文本上下文作为检索的搜索关键字。首先，IR基线将训练集中的每个问题编码为tf-idf权重的向量（Joachims，1997年），然后通过LSA进行维度缩减（Halko等人，2011年）。在测试时，使用相同的过程将输入三元组的文本上下文转换为密集向量，然后检索到与输入最接近的余弦距离的问题。提供了这个基线的两个版本：原始文本的IR和复制操作的带有占位符的文本的IR。</li>
+<li><strong>encoder-decoder</strong> 我们将我们的模型与编码器-解码器模型与单个占位符进行比较，后者是来自（Serban等人，2016）的最佳性能模型。我们用transe嵌入初始化编码器，用glove word嵌入初始化解码器。虽然这个模型最初不是为了推广到非特定的医学和实体类型而建立的，但是它在预先训练的嵌入中呈现了编码的信息中的特定化能力。预训练的知识库术语和单词嵌入将实体之间或单词之间的关系编码为矢量空间中的翻译。因此，模型可能能够将输入事实中的新类或谓词映射到输出问题中的新单词。</li>
+</ul>
+<h2 id="3-结果分析"><a href="#3-结果分析" class="headerlink" title="(3)      结果分析"></a>(3)      结果分析</h2><ul>
+<li>Unseen predicate</li>
+</ul>
+<p><img src="C:\Users\Administrator.PC-201705241810\AppData\Roaming\Typora\typora-user-images\1555077074898.png" alt="1555077074898"></p>
+<ul>
+<li><p>Unseen sub-types and obj-types</p>
+<p><img src="C:\Users\Administrator.PC-201705241810\AppData\Roaming\Typora\typora-user-images\1555077111424.png" alt="1555077111424"></p>
+</li>
+</ul>
+<h1 id="5、结论"><a href="#5、结论" class="headerlink" title="5、结论"></a>5、结论</h1><h2 id="1-你觉得这篇paper创新与贡献是（不一定如作者所说）？为什么？"><a href="#1-你觉得这篇paper创新与贡献是（不一定如作者所说）？为什么？" class="headerlink" title="(1)      你觉得这篇paper创新与贡献是（不一定如作者所说）？为什么？"></a>(1)      你觉得这篇paper创新与贡献是（不一定如作者所说）？为什么？</h2><p>在zero-shot设定下进行问题生成，分别从unseen  predicate和Unseen sub-types and obj-types进行了实验分析，之前没有人在对在zero-shot进行问题生成的。</p>
+<p>同时数据集的扩展也是比较创新的，扩展谓词的上下文信息感觉可以作为一个额外的知识，和实体类型和词性应该可以作为特征。</p>
+<h2 id="2-有没有进一步深入的价值？为什么？"><a href="#2-有没有进一步深入的价值？为什么？" class="headerlink" title="(2)      有没有进一步深入的价值？为什么？"></a>(2)      有没有进一步深入的价值？为什么？</h2><p>应该有的，zero-shot的问题生成跟zero-shot的关系抽取有类似之处，都是针对三元组进行抽取，只是他是根据三元组对问题进行生成，关系抽取抽取是三元组的内容，他是生成问题，或许是否直接可以生成答案，根据句子信息，或者问题和答案同时生成，但如何进行需要再仔细思考下。</p>
+<h2 id="3-列出该文弱点（或者是你觉得应该是什么问题，他解决的不好，你会如何解决？）"><a href="#3-列出该文弱点（或者是你觉得应该是什么问题，他解决的不好，你会如何解决？）" class="headerlink" title="(3)      列出该文弱点（或者是你觉得应该是什么问题，他解决的不好，你会如何解决？）"></a>(3)      列出该文弱点（或者是你觉得应该是什么问题，他解决的不好，你会如何解决？）</h2><p>模型的准确度还不是很高，有进一步提升空间。</p>
+<h2 id="4-该文对你的启发是？"><a href="#4-该文对你的启发是？" class="headerlink" title="(4)      该文对你的启发是？"></a>(4)      该文对你的启发是？</h2><p>如何对零样本的进行生成有一定了解，但还是需要进行深一步研究。</p>
+<h2 id="5-列出其中有价值的需要进一步阅读的参考文献"><a href="#5-列出其中有价值的需要进一步阅读的参考文献" class="headerlink" title="(5)      列出其中有价值的需要进一步阅读的参考文献"></a>(5)      列出其中有价值的需要进一步阅读的参考文献</h2><ul>
+<li>Michael Heilman and Noah A. Smith. 2010. Good question! statistical ranking for question generation. In Human Language Technologies: Conference of the North American Chapter of the Association of Computational Linguistics, Proceedings, June 2-4, 2010, Los Angeles, California, USA.pages 609–617. <a href="http://www.aclweb.org/anthology/N10-1086" target="_blank" rel="noopener">http://www.aclweb.org/anthology/N10-1086</a>.</li>
+<li>Xinya Du, Junru Shao, and Claire Cardie. 2017. Learn- ing to ask: Neural question generation for read- ing comprehension. In Proceedings of the 55th Annual Meeting of the Association for Computa- tional Linguistics, ACL 2017, Vancouver, Canada, July 30 - August 4, Volume 1: Long Papers. pages 1342–1352. <a href="https://doi.org/10.18653/v1/P17-1123" target="_blank" rel="noopener">https://doi.org/10.18653/v1/P17-1123</a></li>
+</ul>
+
+    </article>
+    <!-- 前后页  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href= "/2019/07/14/论文学习笔记Learning with Noise Enhance Distantly Supervised Relation Extraction with Dynamic Transition Matrix (1)/" title=  >
+                    <div class="nextTitle">[Untitled Post]</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2018/05/12/论文学习笔记-Relation Classification via Convolutional Deep Neural Network/" title= Relation Classification via Convolutional Deep Neural Network >
+                    <div class="prevTitle">Relation Classification via Convolutional Deep Neural Network</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+    <div id="lv-container" data-id="city" data-uid= [object Object]>
+        <script type="text/javascript">
+            (function (d, s) {
+                var j, e = d.getElementsByTagName(s)[0];
+                if (typeof LivereTower === 'function') { return; }
+                j = d.createElement(s);
+                j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                j.async = true;
+
+                e.parentNode.insertBefore(j, e);
+            })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!--PC版-->
+
+    <!--PC版-->
+
+
+    
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:291981835@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/lulumengyi" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+            
+                <span class="iconfont-archer wechat" title=wechat>
+                  
+                  <img class="profile-qr" src="/assets/example_qr.png" />
+                </span>
+            
+        
+    
+        
+    
+        
+            
+                <a href="https://weibo.com/u/2828430520/home?wvr=5" class="iconfont-archer weibo" target="_blank" title=weibo></a>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+        <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span>
+        </span>
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Zero-Shot-Question-Generation-from-Knowledge-Graphs-for-Unseen-Predicates-and-Entity-Types"><span class="toc-number">1.</span> <span class="toc-text">Zero-Shot Question Generation from Knowledge Graphs for Unseen Predicates and Entity Types</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1、题目与摘要"><span class="toc-number">2.</span> <span class="toc-text">1、题目与摘要</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-本文针对什么任务？任务简要介绍下。"><span class="toc-number">2.1.</span> <span class="toc-text">(1)      本文针对什么任务？任务简要介绍下。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-本文发现了什么问题？该文大体是怎么解决的？解决得如何？"><span class="toc-number">2.2.</span> <span class="toc-text">(2)      本文发现了什么问题？该文大体是怎么解决的？解决得如何？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-解释下题目。题目起得如何？能概括内容并吸引人吗？"><span class="toc-number">2.3.</span> <span class="toc-text">(3)      解释下题目。题目起得如何？能概括内容并吸引人吗？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2、介绍"><span class="toc-number">3.</span> <span class="toc-text">2、介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-这个任务以往是如何解决的？作者沿着哪条路径继续研究的？为什么？"><span class="toc-number">3.1.</span> <span class="toc-text">(1)      这个任务以往是如何解决的？作者沿着哪条路径继续研究的？为什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-目前摘要存在什么问题？为什么？你觉得可能还存在什么其他问题？为什么？"><span class="toc-number">3.2.</span> <span class="toc-text">(2)      目前摘要存在什么问题？为什么？你觉得可能还存在什么其他问题？为什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-该文准备如何解决这个问题？为什么可以这样解决？你觉得该文解决这个问题的方法如何？为什么？你觉得可以如何-或更好的解决这个问题？为什么？"><span class="toc-number">3.3.</span> <span class="toc-text">(3)      该文准备如何解决这个问题？为什么可以这样解决？你觉得该文解决这个问题的方法如何？为什么？你觉得可以如何/或更好的解决这个问题？为什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-列出该文贡献（该文自己觉得的）"><span class="toc-number">3.4.</span> <span class="toc-text">(4)      列出该文贡献（该文自己觉得的）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3、模型"><span class="toc-number">4.</span> <span class="toc-text">3、模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-整体介绍（主要是图）"><span class="toc-number">4.1.</span> <span class="toc-text">(1)      整体介绍（主要是图）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-模型创新点"><span class="toc-number">4.2.</span> <span class="toc-text">(2)      模型创新点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-（仅对要进一步跟进的paper）详细介绍模型，从输入到输出，输入矩阵维度，公式等"><span class="toc-number">4.3.</span> <span class="toc-text">(3)      （仅对要进一步跟进的paper）详细介绍模型，从输入到输出，输入矩阵维度，公式等</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-Textual-Context-Encoder"><span class="toc-number">4.3.1.</span> <span class="toc-text">3.2 Textual Context Encoder</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-Attention"><span class="toc-number">4.4.</span> <span class="toc-text">3.3 Attention</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4、实验"><span class="toc-number">5.</span> <span class="toc-text">4、实验</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-数据集及评价标准介绍"><span class="toc-number">5.1.</span> <span class="toc-text">(1)      数据集及评价标准介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-1-predicate-textual-contexts"><span class="toc-number">5.1.1.</span> <span class="toc-text">4.1.1 predicate textual contexts</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-2-Sub-Type-and-Obj-Type-textual-contexts"><span class="toc-number">5.1.2.</span> <span class="toc-text">4.1.2 Sub-Type and Obj-Type textual contexts</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#评价标准"><span class="toc-number">5.1.3.</span> <span class="toc-text">评价标准</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Baseline介绍"><span class="toc-number">5.2.</span> <span class="toc-text">(2)      Baseline介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-结果分析"><span class="toc-number">5.3.</span> <span class="toc-text">(3)      结果分析</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5、结论"><span class="toc-number">6.</span> <span class="toc-text">5、结论</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-你觉得这篇paper创新与贡献是（不一定如作者所说）？为什么？"><span class="toc-number">6.1.</span> <span class="toc-text">(1)      你觉得这篇paper创新与贡献是（不一定如作者所说）？为什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-有没有进一步深入的价值？为什么？"><span class="toc-number">6.2.</span> <span class="toc-text">(2)      有没有进一步深入的价值？为什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-列出该文弱点（或者是你觉得应该是什么问题，他解决的不好，你会如何解决？）"><span class="toc-number">6.3.</span> <span class="toc-text">(3)      列出该文弱点（或者是你觉得应该是什么问题，他解决的不好，你会如何解决？）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-该文对你的启发是？"><span class="toc-number">6.4.</span> <span class="toc-text">(4)      该文对你的启发是？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-列出其中有价值的需要进一步阅读的参考文献"><span class="toc-number">6.5.</span> <span class="toc-text">(5)      列出其中有价值的需要进一步阅读的参考文献</span></a></li></ol></li></ol>
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 23 </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/14</span><a class="archive-post-title" href= "/2019/07/14/论文学习笔记Vocabulary Pyramid Network Multi-Pass Encoding and Decoding with Multi-Level Vocabularies for Response Generation  /" >[Untitled Post]</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/14</span><a class="archive-post-title" href= "/2019/07/14/论文学习笔记  /" >[Untitled Post]</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/14</span><a class="archive-post-title" href= "/2019/07/14/“AIS 2019”论文研讨会 Distilling Discrimination and Generalization Knowledge for Event Detection via Delta-Representation Lear/" >[Untitled Post]</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/14</span><a class="archive-post-title" href= "/2019/07/14/论文学习笔记Learning with Noise Enhance Distantly Supervised Relation Extraction with Dynamic Transition Matrix (1)/" >[Untitled Post]</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/14</span><a class="archive-post-title" href= "/2019/07/14/论文学习笔记 Learning to Ask Good Questions Ranking Clarification Questions using Neural Expected Value of Perfect Information 170917/" >[Untitled Post]</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2019/04/15/论文学习笔记 Zero-Shot Question Generation from Knowledge Graphs for Unseen Predicates and Entity Types/" >论文学习笔记 Zero-Shot Question Generation from Knowledge Graphs for Unseen Predicates and Entity Types</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2018 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/12</span><a class="archive-post-title" href= "/2018/05/12/论文学习笔记-Relation Classification via Convolutional Deep Neural Network/" >Relation Classification via Convolutional Deep Neural Network</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/06</span><a class="archive-post-title" href= "/2018/05/06/论文学习笔记-Distant Supervision for Relation Extraction with Sentence-Level Attention and Entity Descriptions/" >论文学习笔记-Distant Supervision for Relation Extraction with Sentence-level Attention and Entity Descriptions</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/22</span><a class="archive-post-title" href= "/2018/04/22/集成学习/" >集成学习-学习笔记</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/22</span><a class="archive-post-title" href= "/2018/04/22/论文学习笔记 ask ：Effectively Combining Recurrent and Convolutional Neural Networks for Relation Classification and Extraction/" >论文学习笔记-Effectively Combining Recurrent and Convolutional Neural Networks for Relation Classification and Extraction</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/21</span><a class="archive-post-title" href= "/2018/04/21/tensorflow基础/" >tensorflow中的一些函数</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/20</span><a class="archive-post-title" href= "/2018/04/20/parser命令解析/" >tensorflow - argparse模块</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/20</span><a class="archive-post-title" href= "/2018/04/20/动态规划算法总结/" >动态规划算法总结</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/20</span><a class="archive-post-title" href= "/2018/04/20/leetcode练习1/" >leetcode—数组</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/Q-learning/" >论文学习笔记-Dual-tensor</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/4.16-4.22周计划/" >416-422周计划</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/13</span><a class="archive-post-title" href= "/2018/03/13/313-319周计划/" >313-319周计划</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/26</span><a class="archive-post-title" href= "/2018/02/26/序列模型/" >吴恩达 第五部分 序列模型</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2018/04/24/tensorboard/" >[Untitled Post]</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2018 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/21</span><a class="archive-post-title" href= "/2018/01/21/Lmy的第一篇博客/" >Lmy的一篇博客</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2018/01/22/Markdown常用语法/" >Markdown 常用语法(个人总结）</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2018/01/21/hello-world/" >Hello World</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2018/03/14/强化学习概述/" >强化学习概述</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="日常"><span class="iconfont-archer">&#xe606;</span>日常</span>
+    
+        <span class="sidebar-tag-name" data-tags="计划"><span class="iconfont-archer">&#xe606;</span>计划</span>
+    
+        <span class="sidebar-tag-name" data-tags="学习笔记"><span class="iconfont-archer">&#xe606;</span>学习笔记</span>
+    
+        <span class="sidebar-tag-name" data-tags="语义关系分类"><span class="iconfont-archer">&#xe606;</span>语义关系分类</span>
+    
+        <span class="sidebar-tag-name" data-tags="文本分类"><span class="iconfont-archer">&#xe606;</span>文本分类</span>
+    
+        <span class="sidebar-tag-name" data-tags="tensorflow"><span class="iconfont-archer">&#xe606;</span>tensorflow</span>
+    
+        <span class="sidebar-tag-name" data-tags="算法"><span class="iconfont-archer">&#xe606;</span>算法</span>
+    
+        <span class="sidebar-tag-name" data-tags="论文笔记"><span class="iconfont-archer">&#xe606;</span>论文笔记</span>
+    
+        <span class="sidebar-tag-name" data-tags="问题生成"><span class="iconfont-archer">&#xe606;</span>问题生成</span>
+    
+        <span class="sidebar-tag-name" data-tags="CNN"><span class="iconfont-archer">&#xe606;</span>CNN</span>
+    
+        <span class="sidebar-tag-name" data-tags="RNN"><span class="iconfont-archer">&#xe606;</span>RNN</span>
+    
+        <span class="sidebar-tag-name" data-tags="关系分类"><span class="iconfont-archer">&#xe606;</span>关系分类</span>
+    
+        <span class="sidebar-tag-name" data-tags="lstm rnn"><span class="iconfont-archer">&#xe606;</span>lstm rnn</span>
+    
+        <span class="sidebar-tag-name" data-tags="关系抽取"><span class="iconfont-archer">&#xe606;</span>关系抽取</span>
+    
+        <span class="sidebar-tag-name" data-tags="RL"><span class="iconfont-archer">&#xe606;</span>RL</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: '/',
+        author: 'lmy'
+    }
+</script>
+    <!-- busuanzi  -->
+    
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+    
+    </body>
+</html>
+
+
