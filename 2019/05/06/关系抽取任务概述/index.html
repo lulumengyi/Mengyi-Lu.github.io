@@ -9,7 +9,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
-    <title>Lmy&#39;s Blog</title>
+    <title>关系抽取任务概述 · Lmy&#39;s Blog</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -251,14 +251,23 @@
 </head>
 
     
-        <body class="home-body">
+        <body class="post-body">
     
     
-<header class="header index-header">
+<header class="header">
 
     <div class="read-progress"></div>
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >Lmy&#39;s Blog.</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">关系抽取任务概述</a>
+            </div>
+    </div>
     
     <a class="home-link" href=/>Lmy's Blog.</a>
 </header>
@@ -279,17 +288,17 @@ height:50vh;
     <!-- 主页  -->
     
     
-    <!-- 文章页  -->
+    <!-- 404页  -->
             
-    <div class="site-intro-img" style="background-image: url(/intro/index-bg.jpg)"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
     <div class="site-intro-placeholder"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            Lmy's Blog.
-            <!-- 文章页  -->
+            关系抽取任务概述
+            <!-- 404 -->
             
         </h1>
         <!-- 副标题 -->
@@ -297,167 +306,136 @@ height:50vh;
             <!-- 主页副标题  -->
             
             
-                it's better to burn out than to fade away
+                学习笔记
             
-            <!-- 文章页  -->
+            <!-- 404 -->
             
         </p>
         <!-- 文章页meta -->
+        
+            <!-- 文章页标签  -->
+            
+                <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = 学习笔记>学习笔记</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = 关系抽取>关系抽取</a>
+    
+</div>
+            
+            <div class="post-intro-meta">
+                <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                <span class="post-intro-time">2019/05/06</span>
+                
+                <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                    <span class="iconfont-archer">&#xe602;</span>
+                    <span id="busuanzi_value_page_pv"></span>
+                </span>
+                
+                <span class="shareWrapper">
+                    <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                    <span class="shareText">Share</span>
+                    <ul class="shareList">
+                        <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                            <div class="share-qrcode"></div>
+                        </li>
+                        <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                        <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                        <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                        <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                    </ul>
+                </span>
+            </div>
         
     </div>
 </div>
         <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
 
         <div class="container container-unloaded">
-            <main class="main index-page">
+            <main class="main post-page">
+    <article class="article-entry">
+        <h1 id="关系抽取任务概述"><a href="#关系抽取任务概述" class="headerlink" title="关系抽取任务概述"></a>关系抽取任务概述</h1><p>这也是一个关系抽取的任务。<br>什么是关系抽取呢？主要负责从文本中识别出实体（Entities)，抽取实体之间的语义关系。例如，句子“Bill Gates is the founder of Microsoft Inc.”中包含一个实体对(Bill Gates, Microsoft Inc.)，这两个实体对之间的关系为Founder。</p>
+<p>在本文中如：”The <e1>news</e1> brought about a <e2>commotion</e2> in the office.这段话标明两个实体（news，commotion）这两个实体之间的关系是Cause-Effect(e1,e2)。因果果关系。<br>1.SemEval-2010 Task 8: Multi-Way Classiﬁcation of Semantic Relations Between Pairs of Nominals 多对名词之间语义关系的分类<br>有9种关系如下所示:</p>
+<p><strong>Cause-Effect (CE)</strong>.An event or object leads to an effect. Example: those cancers were caused by radiation exposures.因果关系</p>
+<p><strong>Instrument-Agency (IA).</strong> An agent uses an instrument. Example: phone operator</p>
+<p><strong>Product-Producer (PP)</strong>.A producer causes a product to exist. Example: a factory manufactures suits 生产与被生产的关系</p>
+<p><strong>Content-Container (CC)</strong>.An object is physically stored in a delineated area of space. Example:a bottle full of honey was weighed 容器与内容物的关系</p>
+<p><strong>Entity-Origin (EO)</strong>.An entity is coming or is derived from an origin (e.g., position or mate-rial) Example:letters from foreign countries 实体来自或源自原产地（例如，位置或材料）</p>
+<p><strong>Entity-Destination (ED)</strong>.An entity is moving towards a destination. Example: the boy went to bed 一个实体正在向目的地移动。 例如：男孩去睡觉</p>
+<p><strong>Component-Whole (CW)</strong>.An object is a component of a larger whole. Example: my apartment has a large kitchen 组件到整体</p>
+<p><strong>Member-Collection (MC)</strong>.A member forms anonfunctional part of a collection. Example:there are many trees in the forest 成员集合关系（MC），成员构成集合的非功能部分。 例如：森林里有很多树</p>
+<p><strong>Message-Topic (MT)</strong>.A message, written or spoken, is about a topic. Example: the lecture was about semantics 。信息与主题 例如：讲座是关于语义的。</p>
+<p>各占比例如下图：</p>
+<p><img src="https://i.loli.net/2018/05/06/5aef10ccf1817.jpg" alt=""></p>
+<h1 id="word-embeddings"><a href="#word-embeddings" class="headerlink" title="word embeddings"></a>word embeddings</h1><p><img src="https://i.loli.net/2018/05/06/5aef01d2ccb4d.jpg" alt=""></p>
+<p>1.为了表达这个句子的意思，将每个单词转化为对应的word embedding 。同时找出每个单词所在句子中的位置下标转化为position embeddings（）。将两者相乘，构成新向量集。</p>
+<h1 id="Bidirectional-Network"><a href="#Bidirectional-Network" class="headerlink" title="Bidirectional Network"></a>Bidirectional Network</h1><p><img src="https://i.loli.net/2018/05/07/5aefec4660209.jpg" alt=""></p>
+<p>一个lstm结构如上图所示。首先我们来理解下什么是lstm，在讲lstm之前，我们先讲下rnn。全连接神经网络和卷积神经网络他们都只能单独的取处理一个个的输入，前一个输入和后一个输入是完全没有关系的。但是，某些任务需要能够更好的处理序列的信息，即前面的输入和后面的输入是有关系的。比如我们对一个句子的理解就需要知道前后的单词的意思。RNN 可以被看做是同一神经网络的多次赋值,每个神经网络模块会把消息传递给下一个，<br><img src="https://i.loli.net/2018/05/07/5aeffcd1b7b58.jpg" alt=""></p>
+<p>如果把上面的那个带箭头的圈去掉，它就变成了最普通的全连接神经网络。x是一个向量，它表示输入层的值（这里面没有画出来表示神经元节点的圆圈）；s是一个向量，它表示隐藏层的值（这里隐藏层面画了一个节点，你也可以想象这一层其实是多个节点，节点数与向量s的维度相同）；U是输入层到隐藏层的权重矩阵；o也是一个向量，它表示输出层的值；V是隐藏层到输出层的权重矩阵。那么，现在我们来看看W是什么。循环神经网络的隐藏层的值s不仅仅取决于当前这次的输入x，还取决于上一次隐藏层的值s。权重矩阵 W就是隐藏层上一次的值作为这一次的输入的权重。<br><img src="https://i.loli.net/2018/05/07/5aeffd467969a.jpg" alt=""></p>
+<p>按时间序列展开后大概是这样的结构，这样看就比较清楚了，输入是xt，隐藏值是st，输出值是ot，st的值不仅取决于xt，还取决于st-1。用公式表示循环神经网络的话：<br>ot=g(Vst) –[1]<br>st=f(Uxt+Wst-1) –[2]<br> 式1是输出层的计算公式，输出层是全连接层，也就是每个结点都和隐藏层节点相连，g是激活函数。V是输出层的权重矩阵。式2是隐藏层的计算公式，也是循环层，U是输入x的权重矩阵，W是st-1作为输入的权重矩阵，f是激活函数。</p>
+<p> 我们也可以看出，循环层和全连接层多了一个权重矩阵W。<br> 但RNN有个弊端就是无法解决长距离依赖问题，并不能很好的处理较长的序列。一个主要的原因是，RNN在训练中很容易发生梯度爆炸和梯度消失，这导致训练时梯度不能在较长序列中一直传递下去，从而使RNN无法捕捉到长距离的影响。为什么RNN会产生梯度爆炸和消失问题呢？公式可以推导出来，权重数组W最终的梯度是各个时刻的梯度之和，在某个时刻的时候梯度就下降为0了，那么，从这个时刻开始再往之前走，得到的梯度（几乎为零）就不会对最终的梯度值有任何贡献。</p>
+<p><a href="https://yq.aliyun.com/articles/69845" target="_blank" rel="noopener">详细</a></p>
+<p>lstm就可以解决长距离依赖这个问题。原始RNN的隐藏层只有一个状态，即h，它对于短期的输入非常敏感。那么，假如我们再增加一个状态，即c，让它来保存长期的状态，新增加的状态c，称为单元状态(cell state)。<br>LSTM的关键，就是怎样控制长期状态c。在这里，LSTM的思路是使用三个控制开关。第一个开关，负责控制继续保存长期状态c；第二个开关，负责控制把即时状态输入到长期状态c；第三个开关，负责控制是否把长期状态c作为当前的LSTM的输出。开关是怎样在算法中实现的呢？这就用到了门（gate）的概念。门实际上就是一层全连接层，它的输入是一个向量，输出是一个0到1之间的实数向量。假设W是门的权重向量，是偏置项，那么门可以表示为：<br><img src="https://i.loli.net/2018/05/07/5af00da8eff28.jpg" alt=""><br>最终的计算公式：</p>
+<p><img src="https://i.loli.net/2018/05/07/5af01490ae4ff.jpg" alt=""><br><img src="https://i.loli.net/2018/05/07/5af01473a8186.jpg" alt=""><br><img src="https://i.loli.net/2018/05/07/5af014a685a44.jpg" alt=""><br><img src="https://i.loli.net/2018/05/07/5af014c33ca25.jpg" alt=""></p>
+<p><img src="https://i.loli.net/2018/05/07/5af00fe3ac457.jpg" alt=""><br>在本文中跟上述的lstm有稍微不同，在每个门后都加入了上一时刻的的状态。就是由 Gers &amp; Schmidhuber (2000) 提出的，增加了 “peephole connection”。是说，让门层也会接受细胞状态的输入。<br><img src="https://i.loli.net/2018/05/06/5aef0bab6ba5e.jpg" alt=""><br>本文中总体框架如下：<br><img src="https://i.loli.net/2018/05/06/5aef0be492bb0.jpg" alt=""><br>输入层：将原始句子输入该层；</p>
+<p>向量层：将每个单词映射到一个低维向量；</p>
+<p>LSTM层：利用BLSTM从输入的向量得到该句子的强特征；</p>
+<p>att层：产生一个权重向量，将LSTM中的每一个时间节点通过这个权重向量联结起来；</p>
+<p>输出层：将上面得到的向量运用到关系分类任务上。</p>
+<h1 id="Attention"><a href="#Attention" class="headerlink" title="Attention"></a>Attention</h1><p><img src="https://i.loli.net/2018/05/06/5aef0cd358e38.jpg" alt=""></p>
+<p>什么叫attention？跟我们人类注意力机制差不多，比如我们在过马路时，虽然我们视野会很大，但我们会比较注意红绿灯的状态。<br>在深度学习中我们的注意力机制怎么实现的呢，比如我们要生成目标句子某个单词，就是说“汤姆”对应的概率分布：计算生成Yi时的输入句子单词“Tom”、“Chase”、“Jerry”对Yi来说的注意力分配概率分布。<br>attention矩阵可以通过一个线性层+softmax得到，也就是红框中的部分，其输入是decoder上一时刻的状态si-1以及encoder对应当前第j个词的输出hj。其意思就是当前词的权重，由当前词和decoder的所翻译的前一个词决定，同时引入了输入和输出的信息。<br><img src="https://i.loli.net/2018/05/07/5af020c328633.jpg" alt=""></p>
+<h1 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h1><p><img src="https://i.loli.net/2018/05/07/5af01546df8ff.jpg" alt=""></p>
+
+    </article>
+    <!-- 前后页  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href= "/2019/07/14/论文学习笔记 Learning to Ask Good Questions Ranking Clarification Questions using Neural Expected Value of Perfect Information 170917/" title=  >
+                    <div class="nextTitle">[Untitled Post]</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2019/04/22/“AIS 2019”论文研讨会 Distilling Discrimination and Generalization Knowledge for Event Detection via Delta-Representation Lear/" title=  >
+                    <div class="prevTitle">[Untitled Post]</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+    <div id="lv-container" data-id="city" data-uid= [object Object]>
+        <script type="text/javascript">
+            (function (d, s) {
+                var j, e = d.getElementsByTagName(s)[0];
+                if (typeof LivereTower === 'function') { return; }
+                j = d.createElement(s);
+                j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                j.async = true;
+
+                e.parentNode.insertBefore(j, e);
+            })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+<!-- City版安装代码已完成 -->
     
     
+    <!--PC版-->
+
+    <!--PC版-->
+
+
     
-        <article class="index-post">
-            <a class="abstract-title" href = "/2018/01/21/Lmy的第一篇博客/" >
-                
-                    <span>Lmy的一篇博客</span>
-            </a>
-            <div class="abstract-content">
-                在这里记录我的学习之旅我有一头小毛驴，从来也不骑
-            </div>
-            <div class="abstract-post-meta">
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/01/21</span>
-                </div>
-                <!-- tags  -->
-                
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="abstract-title" href = "/2018/01/21/hello-world/" >
-                
-                    <span>Hello World</span>
-            </a>
-            <div class="abstract-content">
-                Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick StartCreate a new post1$ hexo new "My New Post"
-More info: Writing
-Run server1$ hexo server
-More...
-            </div>
-            <div class="abstract-post-meta">
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/01/21</span>
-                </div>
-                <!-- tags  -->
-                
-            </div>
-        </article>
-    
-    <!-- paginator  -->
-    
-    <nav class="page-nav">
-        <a class="extend prev" rel="prev" href="/page/2/">&#60; PREV</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
-    </nav>
-    
+    <!-- 评论 -->
 </main>
             <!-- profile -->
-            
-            <div class="profile">
-    <img class="profile-avatar" src= /avatar/1.jpg >
-    <div class="profile-name">lumengyi</div>
-    
-    <div class="profile-signature">
-        witness me
-    </div>
-    
-    
-    <div class="profile-social">
-        
-    
-        
-            
-                <a href="mailto:291981835@qq.com" class="iconfont-archer email" title=email ></a>
-            
-        
-    
-        
-            
-                <a href="//github.com/lulumengyi" class="iconfont-archer github" target="_blank" title=github></a>
-            
-        
-    
-        
-            
-                <span class="iconfont-archer wechat" title=wechat>
-                  
-                  <img class="profile-qr" src="/assets/example_qr.png" />
-                </span>
-            
-        
-    
-        
-    
-        
-            
-                <a href="https://weibo.com/u/2828430520/home?wvr=5" class="iconfont-archer weibo" target="_blank" title=weibo></a>
-            
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-
-    </div>
-    
-    
-        <div class="friends">
-            <div>FRIENDS</div>
-            
-                
-                    <span>
-                        <a href= //www.baidu.com target="_black">friendA</a>
-                    </span>
-                
-            
-                
-                    <span>
-                        <a href= //www.google.com target="_black">friendB</a>
-                    </span>
-                
-            
-                
-                    <span>
-                        <a href= //liangsli.github.io/ target="_black">friendC</a>
-                    </span>
-                
-            
-        </div>
-    
-    
-        <div class="about-me">
-            <a href = "/about" >ABOUT ME</a>
-        </div>
-    
-</div>
             
         </div>
         <footer class="footer footer-unloaded">
@@ -532,6 +510,24 @@ More...
 </footer>
     </div>
     <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#关系抽取任务概述"><span class="toc-number">1.</span> <span class="toc-text">关系抽取任务概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#word-embeddings"><span class="toc-number">2.</span> <span class="toc-text">word embeddings</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Bidirectional-Network"><span class="toc-number">3.</span> <span class="toc-text">Bidirectional Network</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Attention"><span class="toc-number">4.</span> <span class="toc-text">Attention</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#实验"><span class="toc-number">5.</span> <span class="toc-text">实验</span></a></li></ol>
+    </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
     <div class="sidebar sidebar-hide">
@@ -1106,6 +1102,8 @@ jsonContent:
     
     </div>
     <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
     
     </body>
 </html>

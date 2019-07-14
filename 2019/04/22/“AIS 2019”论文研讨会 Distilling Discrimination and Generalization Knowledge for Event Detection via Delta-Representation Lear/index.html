@@ -306,6 +306,8 @@ height:50vh;
             <!-- 主页副标题  -->
             
             
+                学习笔记
+            
             <!-- 404 -->
             
         </p>
@@ -313,9 +315,17 @@ height:50vh;
         
             <!-- 文章页标签  -->
             
+                <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = 论文笔记>论文笔记</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = 对话生成>对话生成</a>
+    
+</div>
+            
             <div class="post-intro-meta">
                 <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                <span class="post-intro-time">2019/07/14</span>
+                <span class="post-intro-time">2019/04/22</span>
                 
                 <span id="busuanzi_container_page_pv" class="busuanzi-pv">
                     <span class="iconfont-archer">&#xe602;</span>
@@ -344,9 +354,17 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <ul>
-<li>Vocabulary Pyramid Network: Multi-Pass Encoding and Decoding with Multi-<br>Level Vocabularies for Response Generation<br>主要是针对闲聊系统的对话生成，开放域的信息获取非常自然的回复，开放性的回复<br>seq to seq 给定一个query生成一个response，在训练的时候，我们要做的是根据训练级把query和response的一些词<br>收集起来，设置固定一个词表，然后在词表之上，用我们的seq to seq 做生成模型，但这样的模型存在一些问题，首<br>先是固定的词表，这个是在底层的词级别上的，建模的只能是底层的信息，我们知道虽然我们说的是普通的一句话一<br>个个的词，但是不同的词之间层次结构是不一样的，抽象级别是不一样的，所以固定的通用的一个词表是不太合适<br>的，另外一个step by step 一遍解码的过程，会产生错误累积问题，… 所以为了解决上述问题，我们的motivation是<br>能不能设计一个模型同时解决固定词表和一次解码的问题，<br>传统的模型的话，比如seq to seq ，动态词汇表，对于任意一个词生成跟这个query的相关的关键词，在生成的时候<br>融合固定的词表和动态的词表得到一个更好的结构，基于主题，先用model跑下语料得到一个主题，把这个主题的信<br>息融入到解码的信息中去，最近也有工作提出了用多遍的 解码，其实就是用两遍的解码，推敲网络，通过一次解码<br>可能不能得到一个完美的结果，所以也在考虑这个问题是否还有更好的解决方案，我们想着从两个层面来去考虑，一<br>个层面是在认知层面，比如说去想回复一个response，如果是一个比较有智商的人，比较聪明的人，不是简单的看一<br>句话就立马回复，肯定要看一遍多想几遍，才能对于词汇概念 意图更加理解，说话的时候一个有情商的人不会那直<br>白的把话表达出来，可能会用一些柔和的词多想几遍才能说，另一个层面务实的层面，同一个词表不够好，词表很大<br>的话显卡装不下，太小的话学不到有用的信息，如何取个折中，叫词汇表的金字塔网络，就是把词汇表用多层多次编<br>码解码过程，并且在不同层次用不同的词汇表*，比如说，再开始的时候是最原始的词，加深理解用更抽象一点的<br>词，更抽象的意图的词，主要是在词汇表和编码解码过程的与传统的模型不一样，在词汇表角度，用了多个词汇表，<br>虽然之前用了动态的主题的但还是相对固定的，在解码的有多次解码多次编码，之前最多的就两次，<br>多级别的词汇表怎么获得，对词进行聚类的方法，用词向量按照层次聚类，自顶向上进行聚类，把最下面的一层作为<br>原始的词，把高一点的层抽象的词，最下面的词3000个，这样能语言的层次性，多次的<br>编码解码部分，最开始的词，在解码的过程作为监督信息，最原始的词作用在最先看到的query和最后生成<br>response，中间的用不同层次，在编码的过程中，把这些词汇表输入进去，在解码的过程中，训练的阶段作为他的监<br>督信息，这样能缓解一次编码理解不够，一次理解解码不够准确，<br>实验，weibo和Twitter数据集，在seq to seq 基于attention的，基于动态的，基于主题的，基于推敲的，BLEU和<br>ROUGE，，证明这样的层级是否有效多有效，MV是多个词汇表，多层编码一层解码，多层编码多层解码，，<br>多层的网络的重要性，把高层底层去掉，原始的要保存，人工的测量，流畅性一致性，是否有信息含量三个角度来实<br>验，都有好的性能，<br>这个模型为什么好，第一，逐层理解query的信息，逐层的生成response的信息，类似于课程学习先学简单的信息，<br>再学难一点的信息，各个层次对模型有监督信息在，在高层，词汇表更小<br>QA 把词分成几个层次以后， 哪个词在哪个层次上，对实验结果有什么影响，人不能根据年龄大小划分长辈，怎么样<br>建模的层次性，怎么对词进行层次的划分，按照词频效果不好，就用层级聚类效果比较好，这个词高层340 中间是<br>3400 这个大小是没有科学依据的，选过其他大小的，效果不是特别明显，<br>每一个样本点视为一个簇；<br>计算各个簇之间的距离，最近的两个簇聚合成一个新簇；<br>重复以上过程直至最后只有一簇。<br>层次聚类不指定具体的簇数，而只关注簇之间的远近，最终会形成一个树形图。</li>
-</ul>
+        <p>通过变量表示学习来为事件检测蒸馏判别知识和泛化知识，事件检测任务主要是从文本当中识别某些特定事件的触发词，触发词就是说在文本当中一个很明确的词可以表达事件的发生，比如这个例子，一个美国坦克朝这个旅馆开火，开火这个词表达攻击这件事件的触发词，我们认为一个好的检测系统需要有两种知识，一个判别知识，一个是泛化知识，一个词如果上下文变了，触发词触发不同的事件，那么它就叫做一种判别知识，比如第一个例子和第二个例子，一个是离职事件一个是攻击事件，那么在上下文的变化下词不变触发了不同的事件，我们验证了s4这个句子的离职事件可以被检测出来，第二个知识是泛化知识，如果这个词在训练集中没有见过，或者说标注很少，我们希望我们的模型通过上下文能够检测出来，比如说s5这个句子，hack这个词在训练中没有的词，希望在模型根据上下文的信息仍然可以检测出来，现在常用的一些事件检测的神经网络，BILSTM，DMCNN，ELMO有比较好的判别知识，但是泛化性比较差，那么怎么衡量泛化性呢，把验证集测试集划分了几个不同的子集，OOV，没有在训练集中的=出现过的词，OOL比如fired那个词在训练集中都是离职事件，突然在测试集中是攻击事件，把这种变化叫做OOL，可以观察到在OOV和OOL上的性能是差不多的。</p>
+<p>整个学习框架，把它叫做变量表示学习框架，这个框架的核心希望把一个事件表示的不同部分解耦合，分别增量式的学习再融合的一个过程，我们对一个词学习一个表示的话，它很难同时捕获这两种性能，具体的拆分方法就是，把一个事件拆成三个部分，第一个词就是rw，这个词本身的茨表示，比如word2vec，第二个rd，叫做词汇特定的一个表示，我们希望这个表示是通过这个词汇表示自己激活得到的，第三个rg，词汇无关的表示，可以再不同词之间进行迁移，设计两个delta的算法来增量学习者两个部分，再进一步的融合。</p>
+<p><img src="E:\Hexo\source\_posts\img\1563094112542.png" alt="1563094112542"></p>
+<p>首先一个常见的事件检测的实例，一个候选词的核心，把它左右两边的上下文进行编码，最后送到分类器中进行分类，这个是解耦合的三个部分，最常见的以词汇问中心的上下文选择的机制，希望它能够比如要判别一个词时离职事件的时候可以可以捕获办公室，工作这样的词，如果是攻击性的性质的话，更多的话捕捉一些坦克，兵将，信息来作为上下文的编码，这里用比较常见的BIGRU，加attention的方法，就是说把整个句子作为一个BIGRU的编码，然后拿候选词的隐层向量来进行attention，捕捉它的上下文信息，最后，把两个向量拼起来作为一个词汇特定的表示。</p>
+<p><img src="E:\Hexo\source\_posts\img\1563094237602.png" alt="1563094237602"></p>
+<p>第二个话我们希望捕捉一个词汇无关的表示，这是一个词汇无关的上下文选择机制，用的是经典的DMCNN，希望它能捕获出跟具体词无关的一些知识，比如可以捕获出 trigger to death这种pattern，来表达fired，hacked，beat这种事件，dmcnn就是触发词的左边进行pooling，在触发词右边pooling，拼起来，然后把这个作为一个词汇无关的表示，最后得到了一个rd，rg，再把rw，把这三个进行送到lexical gate机制进行融合，然后送到分类器进行分类，如果我们数据集有n个类别，那分类n+1，加一个不是一个事件，这样有一个问题，这样建模没有办法保证每个部分学出来东西是我们想要的，比如判别泛化知识，通过delta算法学习预训练两个模块，把整个预训练好后再进行fine tune，第一个是我们想做一个词汇增强的变量学习，我们希望我们学习出来的判别式知识，词汇特定的表示是有判别性的，希望它能学出来是事件相关同时词汇特定的表示，那么我们觉得有两个监督信号来得到，第一个监督信号是说，词汇特定的表示和词汇通过fusion门后可以预测出具体的事件类别是什么，同时单单这个词汇特定的表示可以预测出是哪个词建模出来的，这样的话我们就事件相关也是词汇特定的一个表示，把这两部分的表示加在一起，然后用一个lamda合成，作为一个joint学习的过程，同时我们希望得到词汇无关的表示应该是事件相关但是词汇无关的一个表示，就是来一个新的词这样的表示同一是有效的，这个表示和词汇融合以后，可以可以预测他的事件类别，同时单单这个表示无法预测出是从哪个词建模而来的，跟刚那个方法类似，在词汇分类那个级别上进行一个对抗，希望学到那个表示无法预测出从哪个词建模得到的，然后把这两部分放在一起进行联合学习，这个部分都是预训练部分，预训练完后放到整个模型fine-tuneing。</p>
+<p><img src="E:\Hexo\source\_posts\img\1563094260924.png" alt="1563094260924"></p>
+<p>实验的话在ACE2005上，33个类别，公34个分类，baseline比较多，第一个基于特征的方法，第二列是基于表示学习的方法，RNNcnn,第三个是加了外部信息，最高的一个baseline，后面是中间的词汇word2vec表示，第五个用elmo替换，可以看到，只用word2vec的可以超过表示学习的模型，加了elmo的话可以超过加了外部信息的模型，第二个是在KBP2007 的实验，前三个是前三名的方法，我们的方法，用word2vec的和第一名差不多，加了emlo后可以超过第一名，同时对不同的子集进行了分析，前两个子集，第三个子集，某一个词触发该词的概率是小于10%的词，这个词叫做稀疏的词，最后一个是稠密的触发概率比较高的词，可以看到，在dense上的性能都是比较差的，但是在oov ool上的性能是比较差的，第二栏是指开始的时候只是把词汇特定表示拼那个词汇做学习，没有加辅助任务，第三个是加了词增强词对抗效果，可以看到特别是在次对抗oov ool 上比较明显，最后一个预训练的词向量融合起来，组合对比。</p>
+<p><img src="E:\Hexo\source\_posts\img\1563094300471.png" alt="1563094300471"></p>
+<p><img src="E:\Hexo\source\_posts\img\1563094317756.png" alt="1563094317756"></p>
+<p>总结，提出了一个新的表示框架，两个delta学习的算法，来蒸馏出判别和泛化知识，delta是指一个变量的成分，把词汇作为一个变量，在一个表示当中加入这个变量或者抹去这个变量，这个词汇门可以有效的融合，不同的知识，在未来的工作，希望加入其它的辅助任务来替换掉词增强和词对抗的一个函数，这个框架应用到别的nlp任务</p>
 
     </article>
     <!-- 前后页  -->
@@ -354,16 +372,16 @@ height:50vh;
         <li class="next">
             
                 <div class="nextSlogan">Next Post</div>
-                <a href= "/2019/07/14/论文学习笔记Vocabulary Pyramid Network Multi-Pass Encoding and Decoding with Multi-Level Vocabularies for Response Generation  /" title=  >
-                    <div class="nextTitle">[Untitled Post]</div>
+                <a href= "/2019/05/06/关系抽取任务概述/" title= 关系抽取任务概述 >
+                    <div class="nextTitle">关系抽取任务概述</div>
                 </a>
             
         </li>
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href= "/2019/07/14/论文学习笔记 Learning to Ask Good Questions Ranking Clarification Questions using Neural Expected Value of Perfect Information 170917/" title=  >
-                    <div class="prevTitle">[Untitled Post]</div>
+                <a href= "/2019/04/15/论文学习笔记 Zero-Shot Question Generation from Knowledge Graphs for Unseen Predicates and Entity Types/" title= 论文学习笔记 Zero-Shot Question Generation from Knowledge Graphs for Unseen Predicates and Entity Types >
+                    <div class="prevTitle">论文学习笔记 Zero-Shot Question Generation from Knowledge Graphs for Unseen Predicates and Entity Types</div>
                 </a>
             
         </li>
@@ -791,18 +809,7 @@ top:50vh;
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <div class="total-archive"> Total : 23 </div>
+    <div class="total-archive"> Total : 22 </div>
     
     <div class="post-archive">
     
@@ -819,22 +826,17 @@ top:50vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">07/14</span><a class="archive-post-title" href= "/2019/07/14/论文学习笔记  /" >[Untitled Post]</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">07/14</span><a class="archive-post-title" href= "/2019/07/14/“AIS 2019”论文研讨会 Distilling Discrimination and Generalization Knowledge for Event Detection via Delta-Representation Lear/" >[Untitled Post]</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">07/14</span><a class="archive-post-title" href= "/2019/07/14/论文学习笔记Learning with Noise Enhance Distantly Supervised Relation Extraction with Dynamic Transition Matrix (1)/" >[Untitled Post]</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">07/14</span><a class="archive-post-title" href= "/2019/07/14/论文学习笔记 Learning to Ask Good Questions Ranking Clarification Questions using Neural Expected Value of Perfect Information 170917/" >[Untitled Post]</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/06</span><a class="archive-post-title" href= "/2019/05/06/关系抽取任务概述/" >关系抽取任务概述</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/22</span><a class="archive-post-title" href= "/2019/04/22/“AIS 2019”论文研讨会 Distilling Discrimination and Generalization Knowledge for Event Detection via Delta-Representation Lear/" >[Untitled Post]</a>
         </li>
     
     
@@ -867,48 +869,17 @@ top:50vh;
         </li>
     
     
-        <li class="archive-post-item">
-            <span class="archive-post-date">04/22</span><a class="archive-post-title" href= "/2018/04/22/论文学习笔记 ask ：Effectively Combining Recurrent and Convolutional Neural Networks for Relation Classification and Extraction/" >论文学习笔记-Effectively Combining Recurrent and Convolutional Neural Networks for Relation Classification and Extraction</a>
-        </li>
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/21</span><a class="archive-post-title" href= "/2018/04/21/tensorflow基础/" >tensorflow中的一些函数</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">04/20</span><a class="archive-post-title" href= "/2018/04/20/parser命令解析/" >tensorflow - argparse模块</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">04/20</span><a class="archive-post-title" href= "/2018/04/20/动态规划算法总结/" >动态规划算法总结</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">04/20</span><a class="archive-post-title" href= "/2018/04/20/leetcode练习1/" >leetcode—数组</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/Q-learning/" >论文学习笔记-Dual-tensor</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/4.16-4.22周计划/" >416-422周计划</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">03/13</span><a class="archive-post-title" href= "/2018/03/13/313-319周计划/" >313-319周计划</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">02/26</span><a class="archive-post-title" href= "/2018/02/26/序列模型/" >吴恩达 第五部分 序列模型</a>
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2018/01/21/hello-world/" >Hello World</a>
         </li>
     
     
@@ -936,7 +907,22 @@ top:50vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">01/21</span><a class="archive-post-title" href= "/2018/01/21/Lmy的第一篇博客/" >Lmy的一篇博客</a>
+            <span class="archive-post-date">04/22</span><a class="archive-post-title" href= "/2018/04/22/论文学习笔记 ask ：Effectively Combining Recurrent and Convolutional Neural Networks for Relation Classification and Extraction/" >论文学习笔记-Effectively Combining Recurrent and Convolutional Neural Networks for Relation Classification and Extraction</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/21</span><a class="archive-post-title" href= "/2018/04/21/tensorflow基础/" >tensorflow中的一些函数</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/20</span><a class="archive-post-title" href= "/2018/04/20/parser命令解析/" >tensorflow - argparse模块</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/20</span><a class="archive-post-title" href= "/2018/04/20/leetcode练习1/" >leetcode—数组</a>
         </li>
     
     
@@ -959,12 +945,37 @@ top:50vh;
     
         </ul>
     
-    <div class="archive-year"> Invalid date </div>
+    <div class="archive-year"> 2018 </div>
     <ul class="year-list">
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2018/01/21/hello-world/" >Hello World</a>
+            <span class="archive-post-date">04/20</span><a class="archive-post-title" href= "/2018/04/20/动态规划算法总结/" >动态规划算法总结</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/Q-learning/" >论文学习笔记-Dual-tensor</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/4.16-4.22周计划/" >416-422周计划</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/13</span><a class="archive-post-title" href= "/2018/03/13/313-319周计划/" >313-319周计划</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/26</span><a class="archive-post-title" href= "/2018/02/26/序列模型/" >吴恩达 第五部分 序列模型</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/21</span><a class="archive-post-title" href= "/2018/01/21/Lmy的第一篇博客/" >Lmy的一篇博客</a>
         </li>
     
     
@@ -996,11 +1007,15 @@ top:50vh;
     
         <span class="sidebar-tag-name" data-tags="文本分类"><span class="iconfont-archer">&#xe606;</span>文本分类</span>
     
-        <span class="sidebar-tag-name" data-tags="tensorflow"><span class="iconfont-archer">&#xe606;</span>tensorflow</span>
-    
         <span class="sidebar-tag-name" data-tags="算法"><span class="iconfont-archer">&#xe606;</span>算法</span>
     
+        <span class="sidebar-tag-name" data-tags="tensorflow"><span class="iconfont-archer">&#xe606;</span>tensorflow</span>
+    
         <span class="sidebar-tag-name" data-tags="论文笔记"><span class="iconfont-archer">&#xe606;</span>论文笔记</span>
+    
+        <span class="sidebar-tag-name" data-tags="对话生成"><span class="iconfont-archer">&#xe606;</span>对话生成</span>
+    
+        <span class="sidebar-tag-name" data-tags="关系抽取"><span class="iconfont-archer">&#xe606;</span>关系抽取</span>
     
         <span class="sidebar-tag-name" data-tags="问题生成"><span class="iconfont-archer">&#xe606;</span>问题生成</span>
     
@@ -1008,11 +1023,9 @@ top:50vh;
     
         <span class="sidebar-tag-name" data-tags="RNN"><span class="iconfont-archer">&#xe606;</span>RNN</span>
     
-        <span class="sidebar-tag-name" data-tags="关系分类"><span class="iconfont-archer">&#xe606;</span>关系分类</span>
-    
         <span class="sidebar-tag-name" data-tags="lstm rnn"><span class="iconfont-archer">&#xe606;</span>lstm rnn</span>
     
-        <span class="sidebar-tag-name" data-tags="关系抽取"><span class="iconfont-archer">&#xe606;</span>关系抽取</span>
+        <span class="sidebar-tag-name" data-tags="关系分类"><span class="iconfont-archer">&#xe606;</span>关系分类</span>
     
         <span class="sidebar-tag-name" data-tags="RL"><span class="iconfont-archer">&#xe606;</span>RL</span>
     
