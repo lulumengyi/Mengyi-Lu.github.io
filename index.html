@@ -314,46 +314,6 @@ height:50vh;
     
     
         <article class="index-post">
-            <a class="abstract-title" href = "/2019/07/14/论文学习笔记Vocabulary Pyramid Network Multi-Pass Encoding and Decoding with Multi-Level Vocabularies for Response Generation  /" >
-                
-                    <span>[Untitled Post]</span>
-            </a>
-            <div class="abstract-content">
-                Vocabulary Pyramid Network: Multi-Pass Encoding and Decoding with Multi-Level Vocabularies for Response Generation主要是针对闲聊系统的对话生成，开放域的信息获取非常自然的回复，开放性的回复seq to seq 给定一个query生成一个response，在训练的时候，我们要做的是根据训练级把query和response的一些词收集起来，设置固定一个词表，然后在词表之上，用我们的seq to seq 做生成模型，但这样的模型存在一些问题，首先是固定的词表，这个是在底层的词级别上...
-            </div>
-            <div class="abstract-post-meta">
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/07/14</span>
-                </div>
-                <!-- tags  -->
-                
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="abstract-title" href = "/2019/07/14/论文学习笔记 Learning to Ask Good Questions Ranking Clarification Questions using Neural Expected Value of Perfect Information 170917/" >
-                
-                    <span>[Untitled Post]</span>
-            </a>
-            <div class="abstract-content">
-                Learning to Ask Good Questions: Ranking Clarification Questions using Neural Expected Value of Perfect Information1、题目与摘要(1)      本文针对什么任务？任务简要介绍下。​    本文定义了一个新任务，对于一个可能模糊的问题，从一群候选问题中找出澄清性最强的问题作为模糊问题的补充，从而得到更有价值的问题。简短来说就是通过提问对对帖子post信息补全的问题，具体来说，对于给定帖子p，和澄清性问题候选集Q，根据他们对帖子的有效性将这些问题进行排序。使用场景，比如，ter...
-            </div>
-            <div class="abstract-post-meta">
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/07/14</span>
-                </div>
-                <!-- tags  -->
-                
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
             <a class="abstract-title" href = "/2019/05/06/关系抽取任务概述/" >
                 
                     <span>关系抽取任务概述</span>
@@ -563,12 +523,15 @@ height:50vh;
         <article class="index-post">
             <a class="abstract-title" href = "/2018/04/22/论文学习笔记 ask ：Effectively Combining Recurrent and Convolutional Neural Networks for Relation Classification and Extraction/" >
                 
-                    <span>论文学习笔记-Effectively Combining Recurrent and Convolutional Neural Networks for Relation Classification and Extraction</span>
+                    <span>Effectively Combining Recurrent and Convolutional Neural Networks for Relation Classification and Extraction</span>
             </a>
             <div class="abstract-content">
-                ETH-DS3Lab at SemEval-2018 Task ：Effectively Combining Recurrent and Convolutional Neural Networks for Relation Classification and Extraction概论本文来自苏黎世联邦理工学院 DS3Lab，文章针对实体关系抽取任务进行了非常系统的实验，并在第十二届国际语义评测比赛 SemEval 2018 的语义关系抽取和分类任务上获得冠军。
+                概论本文来自苏黎世联邦理工学院 DS3Lab，文章针对实体关系抽取任务进行了非常系统的实验，并在第十二届国际语义评测比赛 SemEval 2018 的语义关系抽取和分类任务上获得冠军。
 #关于评测SemEval Task 7 子任务介绍：
-Subtask1.1 实体对关系分类（给定实体对，句子，关系，不包含NA...
+Subtask1.1 实体对关系分类（给定实体对，句子，关系，不包含NA类别）
+Subtask1.2 加噪数据实体对关系分类（给定实体对，句子，关系，不包含NA类别）
+Subtask2 实体关系分类（给定实体位置，句子，关系，包含NA类别）
+摘要本文主要提出了一个基于卷积和递归神经网络集成的关系分类和提取系统，该系统在SemEval 2018任务7的4...
             </div>
             <div class="abstract-post-meta">
                 <!-- date  -->
@@ -581,11 +544,73 @@ Subtask1.1 实体对关系分类（给定实体对，句子，关系，不包含
     
         <a class="post-tag" href="javascript:void(0);" data-tags = 学习笔记>学习笔记</a>
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = 文本分类>文本分类</a>
-    
         <a class="post-tag" href="javascript:void(0);" data-tags = CNN>CNN</a>
     
         <a class="post-tag" href="javascript:void(0);" data-tags = RNN>RNN</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = 文本分类>文本分类</a>
+    
+</div>
+                
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
+            <a class="abstract-title" href = "/2018/04/21/tensorflow基础/" >
+                
+                    <span>tensorflow中的一些函数</span>
+            </a>
+            <div class="abstract-content">
+                1.tf.argmaxtf.argmax(input, axis=None, name=None, dimension=None)此函数是对矩阵按行或列计算最大值
+参数input：输入Tensoraxis：0表示按列，1表示按行name：名称dimension：和axis功能一样，默认axis取值优先。新加的字段返回：Tensor 一般是行或列的最大值下标
+123456789101112131415import tensorflow as tf  a=tf.Variable(tf.random_uniform([3,4],minval=-1,maxval=1))  b=tf.argmax...
+            </div>
+            <div class="abstract-post-meta">
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/21</span>
+                </div>
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = tensorflow>tensorflow</a>
+    
+</div>
+                
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
+            <a class="abstract-title" href = "/2018/04/20/leetcode练习1/" >
+                
+                    <span>leetcode—数组</span>
+            </a>
+            <div class="abstract-content">
+                数组从排序数组中删除重复项原题链接链接给定一个排序数组，你需要在原地删除重复出现的元素，使得每个元素只出现一次，返回移除后数组的新长度。
+不要使用额外的数组空间，你必须在原地修改输入数组并在使用 O(1) 额外空间的条件下完成。
+如：
+
+给定数组 nums = [1,1,2], 函数应该返回新的长度 2, 并且原数组 nums 的前两个元素被修改为 1, 2。
+
+刚开始我很傻的想直接用set集合来做的，先转换为set集合，再转换为列表，hh毫无疑问 NOT AC！
+正确的思路：
+弄两个指针，开始指向第一个和第二个，发现相同的则重复的需要去掉，无非就是遍历数组，发现重复，就把后面的往前移，...
+            </div>
+            <div class="abstract-post-meta">
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/20</span>
+                </div>
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = 算法>算法</a>
     
 </div>
                 
@@ -595,7 +620,7 @@ Subtask1.1 实体对关系分类（给定实体对，句子，关系，不包含
     <!-- paginator  -->
     
     <nav class="page-nav">
-        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">NEXT &#62;</a>
+        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">NEXT &#62;</a>
     </nav>
     
 </main>
@@ -1032,45 +1057,7 @@ Subtask1.1 实体对关系分类（给定实体对，句子，关系，不包含
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <div class="total-archive"> Total : 22 </div>
+    <div class="total-archive"> Total : 20 </div>
     
     <div class="post-archive">
     
@@ -1079,16 +1066,6 @@ Subtask1.1 实体对关系分类（给定实体对，句子，关系，不包含
     
     <div class="archive-year"> 2019 </div>
     <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">07/14</span><a class="archive-post-title" href= "/2019/07/14/论文学习笔记Vocabulary Pyramid Network Multi-Pass Encoding and Decoding with Multi-Level Vocabularies for Response Generation  /" >[Untitled Post]</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">07/14</span><a class="archive-post-title" href= "/2019/07/14/论文学习笔记 Learning to Ask Good Questions Ranking Clarification Questions using Neural Expected Value of Perfect Information 170917/" >[Untitled Post]</a>
-        </li>
     
     
         <li class="archive-post-item">
@@ -1130,17 +1107,33 @@ Subtask1.1 实体对关系分类（给定实体对，句子，关系，不包含
         </li>
     
     
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> Invalid date </div>
-    <ul class="year-list">
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/22</span><a class="archive-post-title" href= "/2018/04/22/论文学习笔记 ask ：Effectively Combining Recurrent and Convolutional Neural Networks for Relation Classification and Extraction/" >Effectively Combining Recurrent and Convolutional Neural Networks for Relation Classification and Extraction</a>
+        </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2018/01/21/hello-world/" >Hello World</a>
+            <span class="archive-post-date">04/21</span><a class="archive-post-title" href= "/2018/04/21/tensorflow基础/" >tensorflow中的一些函数</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/20</span><a class="archive-post-title" href= "/2018/04/20/leetcode练习1/" >leetcode—数组</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/20</span><a class="archive-post-title" href= "/2018/04/20/动态规划算法总结/" >动态规划算法总结</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/20</span><a class="archive-post-title" href= "/2018/04/20/parser命令解析/" >tensorflow - argparse模块</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/Q-learning/" >论文学习笔记-Dual-tensor</a>
         </li>
     
     
@@ -1168,22 +1161,7 @@ Subtask1.1 实体对关系分类（给定实体对，句子，关系，不包含
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/22</span><a class="archive-post-title" href= "/2018/04/22/论文学习笔记 ask ：Effectively Combining Recurrent and Convolutional Neural Networks for Relation Classification and Extraction/" >论文学习笔记-Effectively Combining Recurrent and Convolutional Neural Networks for Relation Classification and Extraction</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">04/21</span><a class="archive-post-title" href= "/2018/04/21/tensorflow基础/" >tensorflow中的一些函数</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">04/20</span><a class="archive-post-title" href= "/2018/04/20/parser命令解析/" >tensorflow - argparse模块</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">04/20</span><a class="archive-post-title" href= "/2018/04/20/leetcode练习1/" >leetcode—数组</a>
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/4.16-4.22周计划/" >416-422周计划</a>
         </li>
     
     
@@ -1206,37 +1184,26 @@ Subtask1.1 实体对关系分类（给定实体对，句子，关系，不包含
     
         </ul>
     
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2018/01/21/hello-world/" >Hello World</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
     <div class="archive-year"> 2018 </div>
     <ul class="year-list">
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/20</span><a class="archive-post-title" href= "/2018/04/20/动态规划算法总结/" >动态规划算法总结</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/Q-learning/" >论文学习笔记-Dual-tensor</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/4.16-4.22周计划/" >416-422周计划</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">03/13</span><a class="archive-post-title" href= "/2018/03/13/313-319周计划/" >313-319周计划</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">02/26</span><a class="archive-post-title" href= "/2018/02/26/序列模型/" >吴恩达 第五部分 序列模型</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">01/21</span><a class="archive-post-title" href= "/2018/01/21/Lmy的第一篇博客/" >Lmy的一篇博客</a>
         </li>
     
     
@@ -1253,6 +1220,25 @@ Subtask1.1 实体对关系分类（给定实体对，句子，关系，不包含
             <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2018/03/14/强化学习概述/" >强化学习概述</a>
         </li>
     
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2018 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/26</span><a class="archive-post-title" href= "/2018/02/26/序列模型/" >吴恩达 第五部分 序列模型</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/21</span><a class="archive-post-title" href= "/2018/01/21/Lmy的第一篇博客/" >Lmy的一篇博客</a>
+        </li>
+    
     </div>
   </div>
         <div class="sidebar-panel-tags">
@@ -1262,12 +1248,6 @@ Subtask1.1 实体对关系分类（给定实体对，句子，关系，不包含
     
         <span class="sidebar-tag-name" data-tags="计划"><span class="iconfont-archer">&#xe606;</span>计划</span>
     
-        <span class="sidebar-tag-name" data-tags="学习笔记"><span class="iconfont-archer">&#xe606;</span>学习笔记</span>
-    
-        <span class="sidebar-tag-name" data-tags="语义关系分类"><span class="iconfont-archer">&#xe606;</span>语义关系分类</span>
-    
-        <span class="sidebar-tag-name" data-tags="文本分类"><span class="iconfont-archer">&#xe606;</span>文本分类</span>
-    
         <span class="sidebar-tag-name" data-tags="算法"><span class="iconfont-archer">&#xe606;</span>算法</span>
     
         <span class="sidebar-tag-name" data-tags="tensorflow"><span class="iconfont-archer">&#xe606;</span>tensorflow</span>
@@ -1275,6 +1255,8 @@ Subtask1.1 实体对关系分类（给定实体对，句子，关系，不包含
         <span class="sidebar-tag-name" data-tags="论文笔记"><span class="iconfont-archer">&#xe606;</span>论文笔记</span>
     
         <span class="sidebar-tag-name" data-tags="对话生成"><span class="iconfont-archer">&#xe606;</span>对话生成</span>
+    
+        <span class="sidebar-tag-name" data-tags="学习笔记"><span class="iconfont-archer">&#xe606;</span>学习笔记</span>
     
         <span class="sidebar-tag-name" data-tags="关系抽取"><span class="iconfont-archer">&#xe606;</span>关系抽取</span>
     
@@ -1284,11 +1266,15 @@ Subtask1.1 实体对关系分类（给定实体对，句子，关系，不包含
     
         <span class="sidebar-tag-name" data-tags="RNN"><span class="iconfont-archer">&#xe606;</span>RNN</span>
     
+        <span class="sidebar-tag-name" data-tags="文本分类"><span class="iconfont-archer">&#xe606;</span>文本分类</span>
+    
         <span class="sidebar-tag-name" data-tags="lstm rnn"><span class="iconfont-archer">&#xe606;</span>lstm rnn</span>
     
         <span class="sidebar-tag-name" data-tags="关系分类"><span class="iconfont-archer">&#xe606;</span>关系分类</span>
     
         <span class="sidebar-tag-name" data-tags="RL"><span class="iconfont-archer">&#xe606;</span>RL</span>
+    
+        <span class="sidebar-tag-name" data-tags="语义关系分类"><span class="iconfont-archer">&#xe606;</span>语义关系分类</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
